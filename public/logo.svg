@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 160">
+  <!-- Texto principal -->
+  <text x="20" y="90" font-family="Montserrat, sans-serif" font-size="120" font-weight="700" fill="#FFFFFF" letter-spacing="2">
+    N
+  </text>
+  <text x="95" y="90" font-family="Montserrat, sans-serif" font-size="120" font-weight="700" fill="#e2c209ff" letter-spacing="2">
+    E
+  </text>
+  <text x="170" y="90" font-family="Montserrat, sans-serif" font-size="120" font-weight="700" fill="#FFFFFF" letter-spacing="2">
+    X
+  </text>
+  <text x="245" y="90" font-family="Montserrat, sans-serif" font-size="120" font-weight="700" fill="#FFFFFF" letter-spacing="2">
+    A
+  </text>
+
+  <!-- Eslogan -->
+  <text x="22" y="130" font-family="Montserrat, sans-serif" font-size="32" font-weight="400" fill="#E5E7EB" letter-spacing="1">
+    nueva era de automatización
+  </text>
+</svg>
