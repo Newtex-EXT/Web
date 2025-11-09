@@ -22,8 +22,29 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: "Montserrat";
+}
+
+
+@layer components {
+  .service-card {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .group:hover > .service-card:not(:hover) {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+
+  .service-card:hover {
+    border-color: #B0892D; 
+    box-shadow: 0 0 20px rgba(176, 137, 45, 0.6);
+  }
 }
