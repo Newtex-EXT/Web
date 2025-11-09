@@ -613,7 +613,7 @@ export default function Home() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.63 2.18a14.98 14.98 0 0 0-5.84 7.38m5.84 2.58v-4.8m0 4.8a14.98 14.98 0 0 1-5.84 7.38m5.84-7.38a14.98 14.98 0 0 1 7.38-5.84m-7.38 5.84-7.38-5.84" />
                         </svg>
                         <h3 className="text-2xl font-semibold mt-4">Automatización (RPA)</h3>
-                        <p className="mt-2 text-gray-400">Desplegamos "robots" de software para ejecutar tareas repetitivas y manuales, liberando a tu equipo para trabajos de mayor valor.</p>
+                        <p className="mt-2 text-gray-400">Desplegamos 'robots' de software para ejecutar tareas repetitivas y manuales, liberando a tu equipo para trabajos de mayor valor.</p>
                     </div>
                     <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4">
