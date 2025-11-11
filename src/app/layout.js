@@ -8,7 +8,7 @@ const montserrat = Montserrat({
 
 
 export const metadata = {
-  title: "NEXA S.L",
+  title: "NEXA EXT",
   description: "Soluciones de automatización y digitalización",
 };
 
