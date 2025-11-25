@@ -345,7 +345,7 @@ export default function Home() {
       <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 h-full w-full"></canvas>
       <main className="flex min-h-screen flex-col text-white">
         <header className={`sticky top-0 z-50 w-full mx-auto flex items-center justify-between px-5 py-3 transition-colors duration-300 ${isScrolled ? 'bg-black/50 backdrop-blur-sm' : 'bg-transparent'}`}>
-          <Logo className="w-auto h-10 text-white" />
+          <Logo className="w-auto h-15 text-blue-900" />
           <div className="md:flex md:flex-row flex-col items-center justify-center md:space-x-4">
             <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</Link>
             <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF]">Features</Link>
@@ -491,7 +491,7 @@ export default function Home() {
                     Hablemos de cómo la automatización puede llevar tu empresa al siguiente nivel.
                 </p>
                 <div className="mt-8 fade-in">
-                    <Link href="/contacto" className="rounded bg-white px-5 py-3 text-lg font-semibold text-gray-900 hover:bg-[#00CFFF] hover:text-black">
+                    <Link href="/Contacto" className="rounded bg-white px-5 py-3 text-lg font-semibold text-gray-900 hover:bg-[#00CFFF] hover:text-black">
                         Contáctanos
                     </Link>
                 </div>
