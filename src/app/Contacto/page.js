@@ -125,8 +125,8 @@ export default function Contact() {
       <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 h-full w-full"></canvas>
       <main className="flex min-h-screen flex-col text-white">
         {/* Header */}
-        <header className={`sticky top-0 z-50 w-full mx-auto flex items-center justify-between px-5 py-3 transition-colors duration-300 ${isScrolled ? 'bg-black/50 backdrop-blur-sm' : 'bg-transparent'}`}>
-          <Logo className="w-auto h-15 text-blue-900" />
+        <header className={`sticky top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 ${isScrolled ? 'bg-black/50 backdrop-blur-sm' : 'bg-transparent'}`}>
+          <Logo className="w-auto h-12 text-blue-900 mt-2" />
           <div className="md:flex md:flex-row flex-col items-center justify-center md:space-x-4">
             <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</Link>
             <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF]">Features</Link>
@@ -225,7 +225,7 @@ export default function Contact() {
         {/* Footer */}
         <footer className="w-full border-t border-white/10 mt-auto">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-6 text-sm">
-            <div>© {new Date().getFullYear()} NEXA .EXT — Todos los derechos reservados</div>
+            <div>© {new Date().getFullYear()} NEWTEX — Todos los derechos reservados</div>
             <div className="flex gap-6">
               <span>Teléfono corporativo — +34 608 77 10 56</span>
               <span>Dirección: C. Roa Bastos, 10005 Cáceres</span>
