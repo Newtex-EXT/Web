@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import Lenis from 'lenis';
 import * as THREE from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
@@ -12,7 +14,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 
 import Logo from "@/components/Logo";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const brands = [
   { name: "Empresa A", color: "#00CFFF" },
@@ -24,12 +26,43 @@ const brands = [
 ];
 
 export default function Home() {
-  const [servicesOpen, setServicesOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
-  const servicesRef = useRef(null);
   const canvasRef = useRef(null);
   const mainRef = useRef(null);
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // gsap.ticker.add((time) => {
+    //   lenis.raf(time * 1000);
+    // });
+    // gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+  const handleScrollTo = (id) => {
+    const element = document.querySelector(id);
+    if (element) {
+      gsap.to(window, {
+        duration: 1.5,
+        scrollTo: { y: element, offsetY: 0 },
+        ease: "power3.inOut"
+      });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,25 +72,16 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (servicesRef.current && !servicesRef.current.contains(event.target)) {
-        setServicesOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     let ctx = gsap.context(() => {
-      // 1. ESCENA THREE.JS
+
+      // CONFIGURACIÓN THREE
       const scene = new THREE.Scene();
       const overlayScene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true });
+      const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true, antialias: true });
 
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setClearColor(0x000000, 0);
       renderer.setSize(window.innerWidth, window.innerHeight);
       camera.position.setZ(8);
@@ -74,7 +98,6 @@ export default function Home() {
       });
       const nebulaSphere = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
       scene.add(nebulaSphere);
-
       const planetGroup = new THREE.Group();
       scene.add(planetGroup);
       const planetGeometry = new THREE.SphereGeometry(2, 64, 64);
@@ -85,7 +108,6 @@ export default function Home() {
       });
       const planet = new THREE.Mesh(planetGeometry, planetMaterial);
       planetGroup.add(planet);
-
       const createGlowTexture = () => {
         const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 256;
         const context = canvas.getContext('2d');
@@ -97,7 +119,6 @@ export default function Home() {
       const flareMaterial = new THREE.SpriteMaterial({ map: createGlowTexture(), blending: THREE.AdditiveBlending, transparent: true, depthWrite: false });
       const flare = new THREE.Sprite(flareMaterial);
       flare.scale.set(0.35, 0.35, 1.0); flare.position.set(2.2, 0, 0); planetGroup.add(flare); flare.visible = false;
-
       let distantGlow;
       let isGlowInTransit = false;
       const initialGlowPosition = { x: 15, y: 8, z: -20 };
@@ -112,7 +133,6 @@ export default function Home() {
         overlayScene.add(distantGlow);
       }
       addDistantGlow();
-
       function createConstellation() {
         const constellationGroup = new THREE.Group();
         const starColor = 0x00CFFF; const starPositions = [-3, 2, 2, 0, 3, 2, 3, 2, 2, 0, 0, 2, -4, -2, 2, 4, -2, 2, 0, -3.5, 2];
@@ -134,7 +154,6 @@ export default function Home() {
       }
       const constellation = createConstellation();
       scene.add(constellation);
-
       function createGlobe() {
         const globeVertexShader = `uniform float uRadius; uniform vec3 lightPosition; varying float vIntensity; varying float vAlpha; void main() { vec3 vertexNormal = normalize(position); vec3 lightDirection = normalize(lightPosition - position); vIntensity = max(dot(vertexNormal, lightDirection), 0.2); vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0); vAlpha = smoothstep(-uRadius, uRadius * 0.8, modelViewPosition.z); gl_Position = projectionMatrix * modelViewPosition; gl_PointSize = 1.8; }`;
         const globeFragmentShader = `varying float vIntensity; varying float vAlpha; void main() { vec3 baseColor = vec3(0.0, 0.81, 1.0); vec3 finalColor = baseColor * vIntensity; gl_FragColor = vec4(finalColor, vAlpha * vIntensity); }`;
@@ -153,8 +172,6 @@ export default function Home() {
       globePoints.scale.set(0, 0, 0);
       globePoints.visible = false;
       scene.add(globePoints);
-
-      // Grid
       const gridGeometry = new THREE.PlaneGeometry(12, 12, 80, 80);
       const gridMaterial = new THREE.ShaderMaterial({
         uniforms: { uTime: { value: 0.0 }, uOpacity: { value: 0.0 } },
@@ -164,7 +181,6 @@ export default function Home() {
       });
       const connectionsGrid = new THREE.Points(gridGeometry, gridMaterial);
       connectionsGrid.rotation.x = -Math.PI / 2.5; connectionsGrid.scale.set(0, 0, 0); connectionsGrid.visible = false; scene.add(connectionsGrid);
-
       function addStars() {
         const starVertices = [];
         const createStarSphere = (radius, count) => {
@@ -185,7 +201,6 @@ export default function Home() {
         scene.add(stars);
       }
       addStars();
-
       let dust;
       function addCosmicDust() {
         const dustGeometry = new THREE.BufferGeometry();
@@ -200,19 +215,16 @@ export default function Home() {
         scene.add(dust);
       }
       addCosmicDust();
-
       const composer = new EffectComposer(renderer);
       composer.addPass(new RenderPass(scene, camera));
       const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.4, 0.8);
       bloomPass.threshold = 0.8; bloomPass.strength = 1.2; bloomPass.radius = 0.4;
       composer.addPass(bloomPass);
-
       const mousePosition = new THREE.Vector2();
       window.addEventListener('mousemove', (e) => {
         mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
         mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
       });
-
       const animate = () => {
         requestAnimationFrame(animate);
         const elapsedTime = clock.getElapsedTime();
@@ -228,7 +240,6 @@ export default function Home() {
         const parallaxY = -mousePosition.y * 0.07;
         scene.rotation.y += (parallaxX - scene.rotation.y) * 0.05;
         scene.rotation.x += (parallaxY - scene.rotation.x) * 0.05;
-
         composer.render();
         renderer.autoClear = false;
         renderer.clearDepth();
@@ -236,76 +247,100 @@ export default function Home() {
         renderer.autoClear = true;
       };
       animate();
-
       const handleResize = () => {
         renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight);
         camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
       };
       window.addEventListener('resize', handleResize);
 
-      gsap.timeline({ scrollTrigger: { trigger: ".hero-section", start: "top top", end: "+=200%", scrub: true, pin: true } });
-      gsap.timeline({ scrollTrigger: { trigger: ".features-section", start: "top top", end: "+=250%", scrub: true, pin: true } });
-      gsap.timeline({ scrollTrigger: { trigger: ".process-section", start: "top top", end: "+=250%", scrub: true, pin: true } });
-      gsap.timeline({ scrollTrigger: { trigger: ".sectors-section", start: "top top", end: "+=250%", scrub: true, pin: true } });
-      gsap.timeline({ scrollTrigger: { trigger: ".globe-section", start: "top top", end: "+=300%", scrub: true, pin: true } });
-      gsap.timeline({ scrollTrigger: { trigger: ".tech-section", start: "top top", end: "+=700%", scrub: true, pin: true } });
-      gsap.timeline({ scrollTrigger: { trigger: ".cta-section", start: "top top", end: "+=100%", scrub: true, pin: true } });
+      // CONFIGURACIÓN DE PINES
+      const pinConfig = { start: "top top", scrub: 1, pin: true, anticipatePin: 1 };
 
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: mainRef.current, start: "top top", end: "bottom bottom", scrub: 2.5 }
+      gsap.timeline({ scrollTrigger: { trigger: ".hero-section", end: "+=300%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".features-section", end: "+=400%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=400%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".sectors-section", end: "+=400%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".globe-section", end: "+=500%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".tech-section", end: "+=1000%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".cta-section", end: "+=100%", ...pinConfig } });
+
+      const introTl = gsap.timeline();
+
+      gsap.set(".hero-title, .hero-subtitle, .fade-in, .sector-card, .tech-card", {
+        rotation: 0.01,
+        z: 0.1,
+        force3D: true
       });
 
-      gsap.set(".hero-section .text-center", { perspective: 800 });
-      tl.fromTo(".hero-section .hero-title",
-        { opacity: 0, scale: 0.8, rotationX: -90, transformOrigin: "center center" },
-        { opacity: 1, scale: 1, rotationX: 0, duration: 2, ease: "power3.out" }
-      )
+      introTl
+        .fromTo(".hero-section .hero-title",
+          { opacity: 0, scale: 0.8, y: 50 },
+          { opacity: 1, scale: 1, y: 0, duration: 1.5, ease: "power3.out", force3D: true }
+        )
         .fromTo(".hero-section .hero-subtitle",
           { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" },
-          "-=1.5"
-        )
-        .to({}, { duration: 2 })
-        .to(".hero-section .text-center > *", { opacity: 0, duration: 1.5, ease: "power2.in" });
+          { opacity: 1, y: 0, duration: 1, ease: "power2.out", force3D: true },
+          "-=1"
+        );
 
-      tl.to(planetGroup.position, { x: -4, y: 0, duration: 2, ease: "power2.inOut" })
-        .to(planetGroup.scale, { x: 0.7, y: 0.7, z: 0.7, duration: 2, ease: "power2.inOut" }, "<")
-        .fromTo(".features-section .fade-in", { opacity: 0, y: 50 }, { opacity: 1, y: 0, stagger: 0.2, duration: 1.5 }, "-=1.5")
-        .fromTo(".phone-image", { opacity: 0, x: 100 }, { opacity: 1, x: 0, duration: 1.5, ease: "power2.out" }, "-=1.5")
-        .fromTo(planetGroup.rotation, { y: -Math.PI / 4, z: -Math.PI / 3 }, { y: Math.PI / 4, z: Math.PI / 3, duration: 2.5, ease: "power3.inOut", onStart: () => { flare.visible = true; }, onReverseComplete: () => { flare.visible = false; } }, "-=1.5")
-        .to({}, { duration: 2 })
-        .to(".features-section .fade-in", { opacity: 0, stagger: -0.1, duration: 1.5 })
-        .to(".phone-image", { opacity: 0, x: 100, duration: 1.5, ease: "power2.in" }, "<")
-        .to(planetGroup, { onStart: () => { flare.visible = false; planetGroup.rotation.z = 0; planetGroup.rotation.y = 0; } }, "<");
+      // ANIMACIÓN PRINCIPAL 
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: mainRef.current, start: "top top", end: "bottom bottom", scrub: 1 }
+      });
 
-      tl.to(planetGroup.scale, { x: 0, y: 0, z: 0, duration: 1.5, ease: "power2.in" })
-        .fromTo(".process-section .fade-in", { opacity: 0, y: 50 }, { opacity: 1, y: 0, stagger: 0.2, duration: 1.5 })
-        .to({}, { duration: 2.5 })
-        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 1.5 });
+      tl.to({}, { duration: 0.5 })
+        .to(".hero-section .text-center > *", { opacity: 0, duration: 2, ease: "power2.in", force3D: true })
+        .to(planetGroup.position, { x: -4, y: 0, duration: 3, ease: "power2.inOut", force3D: true }, "<")
+        .to(planetGroup.scale, { x: 0.7, y: 0.7, z: 0.7, duration: 3, ease: "power2.inOut", force3D: true }, "<")
 
-      tl.fromTo(".sectors-section .fade-in", { opacity: 0 }, { opacity: 1, duration: 1.5 })
-        .fromTo(".sector-card", { opacity: 0, y: 50 }, { opacity: 1, y: 0, stagger: 0.2, duration: 1.5 }, "<")
-        .to({}, { duration: 1.5 })
-        .to(distantGlow.position, { x: 0, y: 0, z: 0, duration: 2.0, ease: "power2.inOut", onStart: () => { isGlowInTransit = true; } }, "+=0.5")
-        .to(distantGlow.scale, { x: 8, y: 8, z: 8, duration: 2.0, ease: "power2.inOut" }, "<")
-        .to(distantGlow.material, { opacity: 1.0, duration: 2.0, ease: "power2.in" }, "<")
-        .to(".sectors-section .fade-in", { opacity: 0, duration: 1.5 }, "<")
-        .to(".sector-card", { opacity: 0, stagger: -0.1, duration: 1.5 }, "<");
+        // FEATURES 
+        .fromTo(".features-section .fade-in", { opacity: 0, y: 50, rotation: 0.01 }, { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "-=2")
+        .fromTo(".phone-image", { opacity: 0, x: 100 }, { opacity: 1, x: 0, duration: 3, ease: "power2.out", force3D: true }, "-=2")
+        .fromTo(planetGroup.rotation, { y: -Math.PI / 4, z: -Math.PI / 3 }, { y: Math.PI / 4, z: Math.PI / 3, duration: 3, ease: "power3.inOut", onStart: () => { flare.visible = true; }, onReverseComplete: () => { flare.visible = false; } }, "-=2")
 
-      tl.to(distantGlow.material, { opacity: 0, duration: 1, ease: "power2.out" })
+        .to({}, { duration: 15 })
+
+        .to(".features-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
+        .to(".phone-image", { opacity: 0, x: 100, duration: 2, ease: "power2.in", force3D: true }, "<")
+        .to(planetGroup, { onStart: () => { flare.visible = false; planetGroup.rotation.z = 0; planetGroup.rotation.y = 0; } }, "<")
+        .to(planetGroup.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true })
+
+        // PROCESS 
+        .fromTo(".process-section .fade-in", { opacity: 0, y: 50, rotation: 0.01 }, { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true })
+
+        .to({}, { duration: 15 })
+
+        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
+
+        // SECTORS 
+        .fromTo(".sectors-section .fade-in", { opacity: 0, rotation: 0.01 }, { opacity: 1, rotation: 0.01, duration: 3, force3D: true })
+        .fromTo(".sector-card", { opacity: 0, y: 50, rotation: 0.01 }, { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "<")
+        .to(distantGlow.position, { x: 0, y: 0, z: 0, duration: 3, ease: "power2.inOut", onStart: () => { isGlowInTransit = true; } }, "+=0.5")
+        .to(distantGlow.scale, { x: 8, y: 8, z: 8, duration: 3, ease: "power2.inOut" }, "<")
+        .to(distantGlow.material, { opacity: 1.0, duration: 3, ease: "power2.in" }, "<")
+
+        .to({}, { duration: 15 })
+
+        .to(".sectors-section .fade-in", { opacity: 0, duration: 2, force3D: true })
+        .to(".sector-card", { opacity: 0, stagger: -0.1, duration: 2, force3D: true }, "<")
+
+        // GLOBE 
+        .to(distantGlow.material, { opacity: 0, duration: 2, ease: "power2.out" })
         .set(globePoints, { visible: true }, "<")
         .set(constellation, { visible: true }, "<")
-        .fromTo(globePoints.scale, { x: 0, y: 0, z: 0 }, { x: 0.8, y: 0.8, z: 0.8, duration: 2, ease: "power3.out" }, "<")
-        .fromTo(constellation.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 2.5, ease: "power3.out" }, "<")
+        .fromTo(globePoints.scale, { x: 0, y: 0, z: 0 }, { x: 0.8, y: 0.8, z: 0.8, duration: 3, ease: "power3.out", force3D: true }, "<")
+        .fromTo(constellation.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 3, ease: "power3.out", force3D: true }, "<")
         .to(constellation.children[0].material, { opacity: 1.0, duration: 2 }, "<0.5")
         .to(constellation.children[1].material, { opacity: 0.3, duration: 2 }, "<0.5")
-        .fromTo(".globe-section .fade-in", { opacity: 0 }, { opacity: 1, stagger: 0.3, duration: 1.5 }, "<0.5")
-        .to({}, { duration: 2.5 })
-        .to(".globe-section .fade-in", { opacity: 0, stagger: -0.1, duration: 1.5 })
-        .to(globePoints.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in" }, "<")
-        .to(constellation.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in" }, "<")
-        .to(constellation.children[0].material, { opacity: 0, duration: 1.5 }, "<")
-        .to(constellation.children[1].material, { opacity: 0, duration: 1.5 }, "<")
+        .fromTo(".globe-section .fade-in", { opacity: 0, rotation: 0.01 }, { opacity: 1, stagger: 0.3, duration: 3, rotation: 0.01, force3D: true }, "<0.5")
+
+        .to({}, { duration: 15 })
+
+        .to(".globe-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
+        .to(globePoints.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true }, "<")
+        .to(constellation.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true }, "<")
+        .to(constellation.children[0].material, { opacity: 0, duration: 2 }, "<")
+        .to(constellation.children[1].material, { opacity: 0, duration: 2 }, "<")
         .call(() => {
           globePoints.visible = false;
           constellation.visible = false;
@@ -313,22 +348,26 @@ export default function Home() {
           distantGlow.scale.set(1.5, 1.5, 1.5);
           distantGlow.material.opacity = 0.2;
           isGlowInTransit = false;
-        });
+        })
 
-      tl.to(nebulaMaterial.uniforms.uOpacity, { value: 0.2, duration: 1.5 })
+        // --- TECH ---
+        .to(nebulaMaterial.uniforms.uOpacity, { value: 0.2, duration: 2 })
         .call(() => { connectionsGrid.visible = true; })
-        .fromTo(connectionsGrid.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 2.5, ease: "power2.out" }, "<")
-        .fromTo(connectionsGrid.position, { z: -20 }, { z: -5, duration: 2.5, ease: "power2.out" }, "<")
+        .fromTo(connectionsGrid.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 3, ease: "power2.out", force3D: true }, "<")
+        .fromTo(connectionsGrid.position, { z: -20 }, { z: -5, duration: 3, ease: "power2.out", force3D: true }, "<")
         .to(gridMaterial.uniforms.uOpacity, { value: 0.3, duration: 2 }, "<")
-        .fromTo(".tech-section .fade-in", { opacity: 0 }, { opacity: 1, duration: 1.5 }, "<")
-        .fromTo(".tech-card", { opacity: 0, y: 50 }, { opacity: 1, y: 0, stagger: 0.2, duration: 1.5 }, "-=1")
-        .to({}, { duration: 4.0 })
-        .to(".tech-section .fade-in", { opacity: 0, duration: 2 })
-        .to(".tech-card", { opacity: 0, stagger: -0.05, duration: 0.5 }, "<")
-        .to(gridMaterial.uniforms.uOpacity, { value: 0, duration: 1.0 }, "<")
-        .to(connectionsGrid.scale, { x: 0, y: 0, z: 0, duration: 1.0, onComplete: () => { connectionsGrid.visible = false; } }, "<")
-        .to(nebulaMaterial.uniforms.uOpacity, { value: 1, duration: 1.5 }, "<")
-        .to({}, { duration: 4.0 });
+        .fromTo(".tech-section .fade-in", { opacity: 0, rotation: 0.01 }, { opacity: 1, duration: 3, rotation: 0.01, force3D: true }, "<")
+        .fromTo(".tech-card", { opacity: 0, y: 50, rotation: 0.01 }, { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "-=1")
+
+        .to({}, { duration: 15 })
+
+        .to(".tech-section .fade-in", { opacity: 0, duration: 1, force3D: true })
+        .to(".tech-card", { opacity: 0, stagger: -0.05, duration: 1, force3D: true }, "<")
+        .to(gridMaterial.uniforms.uOpacity, { value: 0, duration: 1.5 }, "<")
+        .to(connectionsGrid.scale, { x: 0, y: 0, z: 0, duration: 1.5, onComplete: () => { connectionsGrid.visible = false; } }, "<")
+        .to(nebulaMaterial.uniforms.uOpacity, { value: 1, duration: 2 }, "<")
+
+        .to({}, { duration: 10 });
 
       const tlCTA = gsap.timeline({
         scrollTrigger: {
@@ -340,16 +379,32 @@ export default function Home() {
       });
 
       tlCTA
-        .fromTo(".cta-title", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1 })
-        .fromTo(".cta-text", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1 }, "-=0.5")
-        .fromTo(".cta-brands-slider", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1 }, "-=0.5")
-        .fromTo(".cta-button", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, "-=0.5");
+        .fromTo(".cta-title",
+          { opacity: 0, scale: 0.9, rotation: 0.01 },
+          { opacity: 1, scale: 1, duration: 1, rotation: 0.01, force3D: true }
+        )
+        .fromTo(".cta-text",
+          { opacity: 0, y: 20, rotation: 0.01 },
+          { opacity: 1, y: 0, duration: 1, rotation: 0.01, force3D: true },
+          "-=0.5"
+        )
+        .fromTo(".cta-brands-slider",
+          { opacity: 0, y: 30, rotation: 0.01 },
+          { opacity: 1, y: 0, duration: 1, rotation: 0.01, force3D: true },
+          "-=0.5"
+        )
+        .fromTo(".cta-button",
+          { opacity: 0, scale: 0.8, rotation: 0.01 },
+          { opacity: 1, scale: 1, duration: 0.5, rotation: 0.01, ease: "back.out(1.7)", force3D: true },
+          "-=0.5"
+        );
 
       gsap.to(".logo-track", {
         xPercent: -50,
         ease: "none",
         duration: 50,
-        repeat: -1
+        repeat: -1,
+        force3D: true
       });
 
     }, mainRef);
@@ -361,66 +416,56 @@ export default function Home() {
     <div ref={mainRef}>
       <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 h-full w-full"></canvas>
       <main className="flex min-h-screen flex-col text-white">
-        <header className={`sticky top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 ${isScrolled ? 'bg-black/50 backdrop-blur-sm' : 'bg-transparent'}`}>
+
+        <header className={`fixed top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 ${isScrolled ? 'bg-black/50 backdrop-blur-sm' : 'bg-transparent'}`}>
           <Logo className="w-auto h-12 text-blue-900 mt-2" />
           <div className="md:flex md:flex-row flex-col items-center justify-center md:space-x-4">
-            <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</Link>
-            <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF]">Features</Link>
-            <div className="relative" ref={servicesRef}>
-              <button type="button" className="dropdown-toggle py-2 px-3 flex items-center gap-2 rounded" onClick={() => setServicesOpen((v) => !v)}>
-                <span>Servicios</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`h-5 w-5 transition-transform ${servicesOpen ? "rotate-180" : ""}`}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                </svg>
-              </button>
-              <div className={`${servicesOpen ? "block" : "hidden"} absolute left-0 z-20 mt-2 w-48 rounded-lg bg-gray-900 text-white shadow-lg`}>
-                <Link href="/servicios/automatizacion" className="block px-6 py-2 hover:bg-gray-800" onClick={() => setServicesOpen(false)}>Automatización</Link>
-                <Link href="/servicios/digitalizacion" className="block px-6 py-2 hover:bg-gray-800" onClick={() => setServicesOpen(false)}>Digitalización</Link>
-              </div>
-            </div>
-            <Link href="/#contacto" className="py-2 px-3 block hover:text-[#00CFFF]">Contacto</Link>
+            <button onClick={() => handleScrollTo("#inicio")} className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</button>
+            <button onClick={() => handleScrollTo("#features")} className="py-2 px-3 block hover:text-[#00CFFF]">Features</button>
+            <button onClick={() => handleScrollTo("#sectores")} className="py-2 px-3 block hover:text-[#00CFFF]">Servicios</button>
+            <button onClick={() => handleScrollTo("#contacto")} className="py-2 px-3 block hover:text-[#00CFFF]">Contacto</button>
           </div>
         </header>
 
-        <section id="inicio" className="hero-section min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-6xl font-extrabold hero-title" style={{ fontFamily: "'Trebuchet MS', sans-serif" }}>NEWTEX</h1>
-            <p className="mt-4 text-lg text-gray-200 hero-subtitle">Automatización a Medida</p>
+        <section id="inicio" className="hero-section min-h-screen relative w-full overflow-hidden">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
+            <h1 className="text-6xl font-extrabold hero-title will-change-transform" style={{ fontFamily: "'Trebuchet MS', sans-serif", backfaceVisibility: 'hidden' }}>NEWTEX</h1>
+            <p className="mt-4 text-lg text-gray-200 hero-subtitle will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Automatización a Medida</p>
           </div>
         </section>
 
-        <section id="features" className="features-section min-h-screen flex items-center">
+        <section id="features" className="features-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4 grid md:grid-cols-2 items-center gap-12">
             <div className="max-w-md">
-              <h2 className="text-4xl font-bold fade-in">Rápido. Fiable. Seguro.</h2>
-              <p className="mt-4 text-lg text-gray-300 fade-in">Nuestras soluciones están diseñadas para optimizar tus procesos sin comprometer la seguridad ni la calidad.</p>
-              <div className="mt-8 fade-in">
-                <Link href="/#proceso" className="rounded px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-[#00CFFF] hover:text-black">
+              <h2 className="text-4xl font-bold fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Rápido. Fiable. Seguro.</h2>
+              <p className="mt-4 text-lg text-gray-300 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Nuestras soluciones están diseñadas para optimizar tus procesos sin comprometer la seguridad ni la calidad.</p>
+              <div className="mt-8 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
+                <button onClick={() => handleScrollTo("#proceso")} className="rounded px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-[#00CFFF] hover:text-black">
                   Nuestro Proceso
-                </Link>
+                </button>
               </div>
             </div>
-            <div className="phone-image opacity-0">
+            <div className="phone-image opacity-0 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
               <Image src="/phone-mockup.png" alt="App de automatización en un móvil" width={400} height={800} />
             </div>
           </div>
         </section>
 
-        <section id="proceso" className="process-section min-h-screen flex items-center">
+        <section id="proceso" className="process-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4">
-            <h2 className="text-center text-4xl font-bold fade-in mb-16">Nuestro Proceso Simplificado</h2>
+            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Nuestro Proceso Simplificado</h2>
             <div className="grid md:grid-cols-3 gap-12">
-              <div className="text-center fade-in">
+              <div className="text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <p className="text-6xl font-bold text-[#00CFFF]">01</p>
                 <h3 className="text-2xl font-semibold mt-4">Análisis y Estrategia</h3>
                 <p className="mt-2 text-gray-400">Estudiamos a fondo tus flujos de trabajo para diseñar una solución a medida que resuelva tus cuellos de botella.</p>
               </div>
-              <div className="text-center fade-in">
+              <div className="text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <p className="text-6xl font-bold text-[#00CFFF]">02</p>
                 <h3 className="text-2xl font-semibold mt-4">Implementación a Medida</h3>
                 <p className="mt-2 text-gray-400">Desarrollamos e integramos las herramientas de automatización directamente en tus sistemas existentes sin interrupciones.</p>
               </div>
-              <div className="text-center fade-in">
+              <div className="text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <p className="text-6xl font-bold text-[#00CFFF]">03</p>
                 <h3 className="text-2xl font-semibold mt-4">Soporte y Optimización</h3>
                 <p className="mt-2 text-gray-400">Monitorizamos el rendimiento y ofrecemos soporte continuo para asegurar que la solución evoluciona con tu negocio.</p>
@@ -429,25 +474,25 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="sectores" className="sectors-section min-h-screen flex items-center">
+        <section id="sectores" className="sectors-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4">
-            <h2 className="text-center text-4xl font-bold fade-in mb-16">Sectores que Impulsamos</h2>
+            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Sectores que Impulsamos</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm">
+              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 2.25 12v-1.5a1.125 1.125 0 0 1 1.125-1.125H5.25m17.25 9V14.25a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 0-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125H18.75m-9-9v-1.875a3.375 3.375 0 0 1 3.375-3.375h1.5A1.125 1.125 0 0 1 15 5.25v1.5c0 .621-.504 1.125-1.125 1.125h-1.5a3.375 3.375 0 0 1-3.375-3.375Z" />
                 </svg>
                 <h3 className="text-2xl font-semibold mt-4">Logística y Almacenamiento</h3>
                 <p className="mt-2 text-gray-400">Optimización de inventario, rutas de entrega y gestión de almacenes para una eficiencia máxima.</p>
               </div>
-              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm">
+              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414-.336.75-.75.75h-.75a.75.75 0 0 1-.75-.75v-.75m0-3-3-3m0 0-3 3m3-3v11.25m6-2.25h.75a.75.75 0 0 0 .75-.75V7.5h-.75A.75.75 0 0 0 21 6.75v.75m0 3.75-3 3m0 0-3-3m3 3V3.75" />
                 </svg>
                 <h3 className="text-2xl font-semibold mt-4">Finanzas y Banca</h3>
                 <p className="mt-2 text-gray-400">Automatización de informes, análisis de riesgos y procesamiento de transacciones para reducir errores y costes.</p>
               </div>
-              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm">
+              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h12A2.25 2.25 0 0 0 20.25 14.25V3m-16.5 0h16.5m-16.5 0H3.75m16.5 0H20.25m0 0h-3.75m-12.75 0h3.75m-3.75 0V1.5m16.5 1.5V1.5m-12.75 3H12m-3.75 3H12m-3.75 3H12" />
                 </svg>
@@ -458,39 +503,39 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="global" className="globe-section min-h-screen flex flex-col justify-center">
+        <section id="global" className="globe-section min-h-screen flex flex-col justify-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4 relative">
-            <h2 className="text-center text-4xl font-bold fade-in">Proyección Global</h2>
-            <div className="fade-in absolute top-1/2 left-20">
+            <h2 className="text-center text-4xl font-bold fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Proyección Global</h2>
+            <div className="fade-in absolute top-1/2 left-20 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
               <p className="text-5xl font-bold text-[#00CFFF]">50+</p>
               <p className="text-lg text-gray-300">Proyectos Exitosos</p>
             </div>
-            <div className="fade-in absolute top-1/3 right-20 text-right">
+            <div className="fade-in absolute top-1/3 right-20 text-right will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
               <p className="text-5xl font-bold text-[#00CFFF]">10+</p>
               <p className="text-lg text-gray-300">Sectores Industriales</p>
             </div>
           </div>
         </section>
 
-        <section id="tecnologias" className="tech-section min-h-screen flex items-center">
+        <section id="tecnologias" className="tech-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4">
-            <h2 className="text-center text-4xl font-bold fade-in mb-16">Tecnologías Clave</h2>
+            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Tecnologías Clave</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm">
+              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M12 3v1.5m0 15v1.5m3.75-18v1.5m0 15v1.5m-7.5-15h1.5m-1.5 15h1.5m-4.5-8.25h1.5m1.5 0h1.5m-1.5-3.75h1.5m-1.5 7.5h1.5m-7.5-3.75h1.5m1.5 0h1.5" />
                 </svg>
                 <h3 className="text-2xl font-semibold mt-4">Inteligencia Artificial</h3>
                 <p className="mt-2 text-gray-400">Utilizamos algoritmos de Machine Learning para crear sistemas que aprenden, se adaptan y toman decisiones inteligentes.</p>
               </div>
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm">
+              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.63 2.18a14.98 14.98 0 0 0-5.84 7.38m5.84 2.58v-4.8m0 4.8a14.98 14.98 0 0 1-5.84 7.38m5.84-7.38a14.98 14.98 0 0 1 7.38-5.84m-7.38 5.84-7.38-5.84" />
                 </svg>
                 <h3 className="text-2xl font-semibold mt-4">Automatización (RPA)</h3>
                 <p className="mt-2 text-gray-400">Desplegamos 'robots' de software para ejecutar tareas repetitivas y manuales, liberando a tu equipo para trabajos de mayor valor.</p>
               </div>
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm">
+              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
                 </svg>
@@ -501,16 +546,15 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contacto" className="cta-section min-h-screen flex flex-col justify-center items-center text-center">
-          <div className="mx-auto max-w-5xl px-4">
+        <section id="contacto" className="cta-section min-h-screen flex flex-col justify-center items-center text-center overflow-hidden">
+          <div className="mx-auto max-w-5xl px-4 relative z-10">
 
-            <h2 className="cta-title text-4xl md:text-6xl font-bold opacity-0">¿Listo para transformar tu negocio?</h2>
-            <p className="cta-text mt-4 text-lg text-gray-300 opacity-0">
+            <h2 className="cta-title text-4xl md:text-6xl font-bold opacity-0 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>¿Listo para transformar tu negocio?</h2>
+            <p className="cta-text mt-4 text-lg text-gray-300 opacity-0 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
               Hablemos de cómo la automatización puede llevar tu empresa al siguiente nivel.
             </p>
 
-            {/* SLIDER DE MARCAS */}
-            <div className="cta-brands-slider w-full mt-16 mb-16 overflow-hidden relative opacity-0 translate-y-8">
+            <div className="cta-brands-slider w-full mt-16 mb-16 overflow-hidden relative opacity-0 translate-y-8 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
               <p className="text-sm font-semibold text-[#00CFFF] tracking-widest uppercase mb-6">Confían en nosotros</p>
               <div className="logo-track flex items-center gap-16 w-max">
                 {[...brands, ...brands, ...brands].map((brand, i) => (
@@ -526,7 +570,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="cta-button mt-8 opacity-0">
+            <div className="cta-button mt-8 opacity-0 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
               <Link href="/Contacto" className="rounded bg-white px-5 py-3 text-lg font-semibold text-gray-900 hover:bg-[#00CFFF] hover:text-black">
                 Contáctanos
               </Link>
