@@ -236,10 +236,6 @@ export default function Home() {
           distantGlow.position.x = initialGlowPosition.x + Math.cos(angle) * 2;
           distantGlow.position.y = initialGlowPosition.y + Math.sin(angle) * 2;
         }
-        const parallaxX = mousePosition.x * 0.07;
-        const parallaxY = -mousePosition.y * 0.07;
-        scene.rotation.y += (parallaxX - scene.rotation.y) * 0.05;
-        scene.rotation.x += (parallaxY - scene.rotation.x) * 0.05;
         composer.render();
         renderer.autoClear = false;
         renderer.clearDepth();
@@ -258,9 +254,9 @@ export default function Home() {
 
       gsap.timeline({ scrollTrigger: { trigger: ".hero-section", end: "+=300%", ...pinConfig } });
       gsap.timeline({ scrollTrigger: { trigger: ".features-section", end: "+=400%", ...pinConfig } });
-      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=400%", ...pinConfig } });
-      gsap.timeline({ scrollTrigger: { trigger: ".sectors-section", end: "+=400%", ...pinConfig } });
-      gsap.timeline({ scrollTrigger: { trigger: ".globe-section", end: "+=500%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=500%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".sectors-section", end: "+=800%", ...pinConfig } });
+      gsap.timeline({ scrollTrigger: { trigger: ".globe-section", end: "+=600%", ...pinConfig } });
       gsap.timeline({ scrollTrigger: { trigger: ".tech-section", end: "+=1000%", ...pinConfig } });
       gsap.timeline({ scrollTrigger: { trigger: ".cta-section", end: "+=100%", ...pinConfig } });
 
@@ -283,7 +279,7 @@ export default function Home() {
           "-=1"
         );
 
-      // ANIMACIÓN PRINCIPAL 
+      // ANIMACIÓN PRINCIPAL
       const tl = gsap.timeline({
         scrollTrigger: { trigger: mainRef.current, start: "top top", end: "bottom bottom", scrub: 1 }
       });
@@ -293,7 +289,7 @@ export default function Home() {
         .to(planetGroup.position, { x: -4, y: 0, duration: 3, ease: "power2.inOut", force3D: true }, "<")
         .to(planetGroup.scale, { x: 0.7, y: 0.7, z: 0.7, duration: 3, ease: "power2.inOut", force3D: true }, "<")
 
-        // FEATURES 
+        // FEATURES
         .fromTo(".features-section .fade-in", { opacity: 0, y: 50, rotation: 0.01 }, { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "-=2")
         .fromTo(".phone-image", { opacity: 0, x: 100 }, { opacity: 1, x: 0, duration: 3, ease: "power2.out", force3D: true }, "-=2")
         .fromTo(planetGroup.rotation, { y: -Math.PI / 4, z: -Math.PI / 3 }, { y: Math.PI / 4, z: Math.PI / 3, duration: 3, ease: "power3.inOut", onStart: () => { flare.visible = true; }, onReverseComplete: () => { flare.visible = false; } }, "-=2")
@@ -305,26 +301,25 @@ export default function Home() {
         .to(planetGroup, { onStart: () => { flare.visible = false; planetGroup.rotation.z = 0; planetGroup.rotation.y = 0; } }, "<")
         .to(planetGroup.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true })
 
-        // PROCESS 
+        // PROCESS
         .fromTo(".process-section .fade-in", { opacity: 0, y: 50, rotation: 0.01 }, { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true })
 
         .to({}, { duration: 15 })
 
         .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
 
-        // SECTORS 
-        .fromTo(".sectors-section .fade-in", { opacity: 0, rotation: 0.01 }, { opacity: 1, rotation: 0.01, duration: 3, force3D: true })
-        .fromTo(".sector-card", { opacity: 0, y: 50, rotation: 0.01 }, { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "<")
-        .to(distantGlow.position, { x: 0, y: 0, z: 0, duration: 3, ease: "power2.inOut", onStart: () => { isGlowInTransit = true; } }, "+=0.5")
-        .to(distantGlow.scale, { x: 8, y: 8, z: 8, duration: 3, ease: "power2.inOut" }, "<")
-        .to(distantGlow.material, { opacity: 1.0, duration: 3, ease: "power2.in" }, "<")
-
+        // SECTORS
+        .fromTo(".sectors-section .fade-in", { opacity: 0, rotation: 0.01 }, { opacity: 1, rotation: 0.01, duration: 2, force3D: true })
+        .fromTo(".sector-card", { opacity: 0, y: 50, rotation: 0.01 }, { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 2, force3D: true }, "<")
         .to({}, { duration: 15 })
-
-        .to(".sectors-section .fade-in", { opacity: 0, duration: 2, force3D: true })
+        .to(distantGlow.position, { x: 0, y: 0, z: 0, duration: 4, ease: "power2.inOut", onStart: () => { isGlowInTransit = true; } })
+        .to(distantGlow.scale, { x: 8, y: 8, z: 8, duration: 4, ease: "power2.inOut" }, "<")
+        .to(distantGlow.material, { opacity: 1.0, duration: 4, ease: "power2.in" }, "<")
+        .to(".sectors-section .fade-in", { opacity: 0, duration: 2, force3D: true }, "<")
         .to(".sector-card", { opacity: 0, stagger: -0.1, duration: 2, force3D: true }, "<")
+        .to({}, { duration: 5 })
 
-        // GLOBE 
+        // GLOBE
         .to(distantGlow.material, { opacity: 0, duration: 2, ease: "power2.out" })
         .set(globePoints, { visible: true }, "<")
         .set(constellation, { visible: true }, "<")
@@ -350,7 +345,7 @@ export default function Home() {
           isGlowInTransit = false;
         })
 
-        // --- TECH ---
+        // TECH
         .to(nebulaMaterial.uniforms.uOpacity, { value: 0.2, duration: 2 })
         .call(() => { connectionsGrid.visible = true; })
         .fromTo(connectionsGrid.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 3, ease: "power2.out", force3D: true }, "<")
