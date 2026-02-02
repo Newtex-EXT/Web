@@ -11,10 +11,12 @@ const certifications = [
   {
     name: "IBM Cloud Essentials",
     image: "/badges/ibm-cloud.png",
+    url: "https://www.credly.com/users/daniel-conde.3a8de20b/badges"
   },
   {
     name: "IBM Python for Data Science",
     image: "/badges/ibm-python.png",
+    url: "https://www.credly.com/users/daniel-conde.3a8de20b/badges"
   }
 ];
 
@@ -240,9 +242,15 @@ export default function TecnologiasPage() {
         <div>© {new Date().getFullYear()} NEWTEX</div>
         <div className="flex gap-4">
           {certifications.map((cert, i) => (
-            <Link href={cert.url} key={i} target="_blank" className="opacity-70 hover:opacity-100 transition-opacity">
-              {cert.name}
-            </Link>
+            cert.url ? (
+              <Link href={cert.url} key={i} target="_blank" className="opacity-70 hover:opacity-100 transition-opacity">
+                {cert.name}
+              </Link>
+            ) : (
+              <span key={i} className="opacity-50 cursor-not-allowed">
+                {cert.name}
+              </span>
+            )
           ))}
         </div>
       </footer>
