@@ -22,7 +22,6 @@ const Solicitud = () => {
         interest: ''
     });
 
-    // Initialize Lenis
     useEffect(() => {
         const lenis = new Lenis({
             duration: 1.2,
@@ -47,7 +46,6 @@ const Solicitud = () => {
     // GSAP Animations
     useLayoutEffect(() => {
         let ctx = gsap.context(() => {
-            // Animate Left Side Content
             gsap.fromTo(".animate-left > *",
                 { opacity: 0, y: 20 },
                 {
@@ -63,7 +61,6 @@ const Solicitud = () => {
                 }
             );
 
-            // Animate Form Card
             gsap.fromTo(".animate-form-card",
                 { opacity: 0, scale: 0.95, y: 20 },
                 {
@@ -79,7 +76,6 @@ const Solicitud = () => {
                 }
             );
 
-            // Animate Form Fields
             gsap.fromTo(".form-field",
                 { opacity: 0, x: -10 },
                 {
@@ -87,7 +83,7 @@ const Solicitud = () => {
                     x: 0,
                     duration: 0.5,
                     stagger: 0.05,
-                    delay: 0.3, // Wait for card
+                    delay: 0.3,
                     ease: "power1.out",
                     scrollTrigger: {
                         trigger: ".animate-form-card",
@@ -112,7 +108,6 @@ const Solicitud = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Formulario enviado:", formData);
-        // Aquí iría la lógica de envío
     };
 
     return (

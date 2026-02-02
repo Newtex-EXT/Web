@@ -12,7 +12,6 @@ module.exports = {
                 "gradient-conic":
                     "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
             },
-            // Colores del nuevo diseño
             colors: {
                 "primary": "#00d9ff",
                 "background-light": "#f5f8f8",

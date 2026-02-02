@@ -13,7 +13,6 @@ const Informacion = () => {
     const mainRef = useRef(null);
     const heroBgRef = useRef(null);
 
-    // Initialize Lenis for smooth scrolling
     useEffect(() => {
         const lenis = new Lenis({
             duration: 1.2,
@@ -21,7 +20,6 @@ const Informacion = () => {
             smooth: true,
         });
 
-        // Sync extra ScrollTrigger updates if needed (though GSAP usually hooks into scroll automatically, explicit update helps with smooth scrollers)
         lenis.on('scroll', ScrollTrigger.update);
 
         function raf(time) {
@@ -38,7 +36,7 @@ const Informacion = () => {
 
     useLayoutEffect(() => {
         let ctx = gsap.context(() => {
-            // 1. Hero Parallax
+            // 1. Hero 
             if (heroBgRef.current) {
                 gsap.to(heroBgRef.current, {
                     yPercent: 20,
@@ -52,7 +50,7 @@ const Informacion = () => {
                 });
             }
 
-            // 2. Fade In Elements (Text, Headings)
+            // 2. Fade In elementos
             const fadeElements = gsap.utils.toArray('.animate-fade-up');
 
             fadeElements.forEach((el) => {
@@ -72,7 +70,7 @@ const Informacion = () => {
                 );
             });
 
-            // 3. System Capability Cards Scale & Fade
+            // 3. Cards
             ScrollTrigger.batch(".capability-card", {
                 onEnter: batch => gsap.fromTo(batch,
                     { opacity: 0, scale: 0.95, y: 20 },
@@ -81,7 +79,7 @@ const Informacion = () => {
                 start: "top 90%"
             });
 
-            // 4. Certified Badges Stagger
+            // 4. Certificados badges
             gsap.fromTo(".cert-badge",
                 { opacity: 0, y: 10, filter: "blur(5px)" },
                 {
@@ -97,7 +95,7 @@ const Informacion = () => {
                 }
             );
 
-            // 5. Leadership List Stagger
+            // 5. Leadership 
             ScrollTrigger.batch(".leader-item", {
                 onEnter: batch => gsap.fromTo(batch,
                     { opacity: 0, x: -20 },

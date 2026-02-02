@@ -66,7 +66,7 @@ export default function PhoneMockup() {
                 </div>
                 <div className="flex flex-col gap-4">
                     <div className="h-1 bg-white/10 w-8 rounded-full"></div>
-                    <h3 className="text-white text-lg font-bold">Dashboard</h3>
+                    <h3 className="text-white text-lg font-bold">Panel de Control</h3>
                     {/* Mini Stats in Mockup */}
                     <div className="grid grid-cols-2 gap-2">
                         <div className="bg-white/5 p-3 rounded-xl border border-white/10">

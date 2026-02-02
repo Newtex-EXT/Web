@@ -29,25 +29,11 @@ const brands = [
   { name: "Empresa F", color: "#00CFFF" },
 ];
 
-const certifications = [
-  {
-    name: "IBM Cloud Essentials",
-    image: "/badges/ibm-cloud.png",
-    url: "https://www.credly.com/users/daniel-conde.3a8de20b/badges"
-  },
-  {
-    name: "IBM Python for Data Science",
-    image: "/badges/ibm-python.png",
-    url: "https://www.credly.com/users/daniel-conde.3a8de20b/badges"
-  }
-];
-
 export default function Home() {
   const pathname = usePathname();
   const isContactPage = pathname === "/Contacto";
   const mainRef = useRef(null);
 
-  // State to store Three.js objects
   const [threeCtx, setThreeCtx] = useState(null);
 
   useEffect(() => {
@@ -93,17 +79,16 @@ export default function Home() {
   };
 
   useLayoutEffect(() => {
-    if (!threeCtx) return; // Wait for Three.js context
+    if (!threeCtx) return;
 
     logger.info("Initializing GSAP Timeline with Three.js Context");
 
-    // 🛡️ HARD RESET
     if (typeof window !== "undefined") {
       window.scrollTo(0, 0);
-      const timer = setTimeout(() => {
+      setTimeout(() => {
         window.scrollTo(0, 0);
         ScrollTrigger.refresh();
-      }, 20);
+      }, 50);
       if (window.history) {
         window.history.scrollRestoration = 'manual';
       }
@@ -117,28 +102,25 @@ export default function Home() {
         setGlowInTransit, initialGlowPosition
       } = threeCtx;
 
-      // --- BUGFIX: Estado inicial si ya hubo scroll ---
       if (window.scrollY > 0) {
         gsap.set(".hero-title, .hero-subtitle", { opacity: 0, visibility: "hidden", overwrite: "auto" });
       } else {
         gsap.set(".hero-title, .hero-subtitle", { opacity: 1, visibility: "visible", y: 0 });
       }
       ScrollTrigger.refresh();
-      // ------------------------------------------------
 
       const handleResize = () => {
-        // Redundant with ThreeCanvas internal resize, but useful if GSAP needs update
       };
       window.addEventListener('resize', handleResize);
 
       const pinConfig = { start: "top top", scrub: 1, pin: true, anticipatePin: 1 };
+
       gsap.timeline({ scrollTrigger: { trigger: ".hero-section", end: "+=600%", ...pinConfig, id: "inicio" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".features-section", end: "+=800%", ...pinConfig, id: "features" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=1000%", ...pinConfig, id: "proceso" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".sectors-section", end: "+=1200%", ...pinConfig, id: "sectores" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".globe-section", end: "+=1000%", ...pinConfig, id: "global" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".tech-section", end: "+=1400%", ...pinConfig, id: "tecnologias" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".cta-section", end: "+=200%", ...pinConfig, id: "contacto" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".features-section", end: "+=1200%", ...pinConfig, id: "features" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".tech-section", end: "+=1200%", ...pinConfig, id: "tecnologias" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=1200%", ...pinConfig, id: "proceso" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".sectors-section", end: "+=1400%", ...pinConfig, id: "sectores" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".cta-section", end: "+=100%", ...pinConfig, id: "contacto" } });
 
       const introTl = gsap.timeline();
       gsap.set(".hero-title, .hero-subtitle, .fade-in, .sector-card, .tech-card", {
@@ -157,22 +139,21 @@ export default function Home() {
 
       gsap.set(".features-section .fade-in", { opacity: 0, y: 50, rotation: 0.01 });
       gsap.set(".phone-image", { opacity: 0, x: 100 });
+      gsap.set(".tech-section .fade-in", { opacity: 0, rotation: 0.01 });
+      gsap.set(".tech-card", { opacity: 0, y: 50, rotation: 0.01 });
       gsap.set(".process-section .fade-in", { opacity: 0, y: 50, rotation: 0.01 });
       gsap.set(".sectors-section .fade-in", { opacity: 0, rotation: 0.01 });
       gsap.set(".sector-card", { opacity: 0, y: 50, rotation: 0.01 });
-      gsap.set(".globe-section .fade-in", { opacity: 0, rotation: 0.01 });
-      gsap.set(".tech-section .fade-in", { opacity: 0, rotation: 0.01 });
-      gsap.set(".tech-card", { opacity: 0, y: 50, rotation: 0.01 });
 
       const tl = gsap.timeline({
         scrollTrigger: { trigger: mainRef.current, start: "top top", end: "bottom bottom", scrub: 1 }
       });
 
       tl.to({}, { duration: 0.5 })
+        // 1. Hero Out / Features In
         .to(".hero-section .text-center > *", { opacity: 0, duration: 2, ease: "power2.in", force3D: true, overwrite: "auto" })
         .to(planetGroup.position, { x: -4, y: 0, duration: 3, ease: "power2.inOut", force3D: true }, "<")
         .to(planetGroup.scale, { x: 0.7, y: 0.7, z: 0.7, duration: 3, ease: "power2.inOut", force3D: true }, "<")
-        // PASO 2: Animar el color del halo
         .to(rimUniforms.uRimColor.value, {
           r: 0.05, g: 0.03, b: 0.005,
           duration: 3,
@@ -184,33 +165,57 @@ export default function Home() {
         .to(".features-section .fade-in", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "-=2")
         .to(".phone-image", { opacity: 1, x: 0, duration: 3, ease: "power2.out", force3D: true }, "-=2")
         .fromTo(planetGroup.rotation, { y: -Math.PI / 4, z: -Math.PI / 3 }, { y: Math.PI / 4, z: Math.PI / 3, duration: 3, ease: "power3.inOut" }, "-=2")
-        .to({}, { duration: 15 })
+
+        .to({}, { duration: 25 })
+
+        // 2. Features Out / Tecnologias In 
         .to(".features-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
         .to(".phone-image", { opacity: 0, x: 100, duration: 2, ease: "power2.in", force3D: true }, "<")
         .to(planetGroup.rotation, { z: 0, y: 0, duration: 0.1 }, "<")
         .to(planetGroup.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true })
-        .to(".process-section .fade-in", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true })
+
+        // Grid tecnologias
+        .call(() => { connectionsGrid.visible = true; })
+        .fromTo(connectionsGrid.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 3, ease: "power2.out", force3D: true }, "<")
+        .fromTo(connectionsGrid.position, { z: -20 }, { z: -5, duration: 3, ease: "power2.out", force3D: true }, "<")
+        .to(gridMaterial.uniforms.uOpacity, { value: 0.3, duration: 2 }, "<")
+
+        // Tecnologias Content In
+        .to(".tech-section .fade-in", { opacity: 1, duration: 3, rotation: 0.01, force3D: true }, "<")
+        .to(".tech-card", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "<")
+
+        .to({}, { duration: 25 })
+
+        // 3. Tecnologias Out / Proceso In
+        .to(".tech-section .fade-in", { opacity: 0, duration: 1, force3D: true })
+        .to(".tech-card", { opacity: 0, stagger: -0.05, duration: 1, force3D: true }, "<")
+
+        .to(gridMaterial.uniforms.uOpacity, { value: 0, duration: 1.5 }, "<")
+        .to(connectionsGrid.scale, { x: 0, y: 0, z: 0, duration: 1.5, onComplete: () => { connectionsGrid.visible = false; } }, "<")
+
+        // Constelacion
+        .to(distantGlow.position, { x: 0, y: 0, z: -5, duration: 4, ease: "power2.inOut", onStart: () => { setGlowInTransit(true); } })
+        .to(distantGlow.scale, { x: 6, y: 6, z: 6, duration: 4, ease: "power2.inOut" }, "<")
+        .to(distantGlow.material, { opacity: 0.6, duration: 4, ease: "power2.in" }, "<")
+
+        // Proceso content
+        .to(".process-section .fade-in", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "-=2")
+
         .to({}, { duration: 15 })
-        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
-        .to(".sectors-section .fade-in", { opacity: 1, rotation: 0.01, duration: 2, force3D: true })
-        .to(".sector-card", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 2, force3D: true }, "<")
-        .to({}, { duration: 15 })
-        .to(distantGlow.position, { x: 0, y: 0, z: 0, duration: 4, ease: "power2.inOut", onStart: () => { setGlowInTransit(true); } })
-        .to(distantGlow.scale, { x: 8, y: 8, z: 8, duration: 4, ease: "power2.inOut" }, "<")
-        .to(distantGlow.material, { opacity: 1.0, duration: 4, ease: "power2.in" }, "<")
-        .to(".sectors-section .fade-in", { opacity: 0, duration: 2, force3D: true }, "<")
-        .to(".sector-card", { opacity: 0, stagger: -0.1, duration: 2, force3D: true }, "<")
-        .to({}, { duration: 5 })
+
+        // Transicion glow
         .to(distantGlow.material, { opacity: 0, duration: 2, ease: "power2.out" })
         .set(globePoints, { visible: true }, "<")
         .set(constellation, { visible: true }, "<")
-        .fromTo(globePoints.scale, { x: 0, y: 0, z: 0 }, { x: 0.8, y: 0.8, z: 0.8, duration: 3, ease: "power3.out", force3D: true }, "<")
-        .fromTo(constellation.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 3, ease: "power3.out", force3D: true }, "<")
-        .fromTo(constellation.children[0].material, { opacity: 0 }, { opacity: 0.8, duration: 2, ease: "power2.out" }, "<0.5")
-        .fromTo(constellation.children[1].material, { opacity: 0 }, { opacity: 0.4, duration: 2, ease: "power2.out" }, "<0.5")
-        .to(".globe-section .fade-in", { opacity: 1, stagger: 0.3, duration: 3, rotation: 0.01, force3D: true }, "<0.5")
+        .fromTo(globePoints.scale, { x: 0, y: 0, z: 0 }, { x: 0.65, y: 0.65, z: 0.65, duration: 3, ease: "power3.out", force3D: true }, "<")
+        .fromTo(constellation.scale, { x: 0, y: 0, z: 0 }, { x: 0.8, y: 0.8, z: 0.8, duration: 3, ease: "power3.out", force3D: true }, "<")
+        .fromTo(constellation.children[0].material, { opacity: 0 }, { opacity: 0.5, duration: 2, ease: "power2.out" }, "<0.5")
+        .fromTo(constellation.children[1].material, { opacity: 0 }, { opacity: 0.3, duration: 2, ease: "power2.out" }, "<0.5")
+
         .to({}, { duration: 15 })
-        .to(".globe-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
+
+        // 4. Proceso Out / Sectores In 
+        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
         .to(globePoints.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true }, "<")
         .to(constellation.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true }, "<")
         .to(constellation.children[0].material, { opacity: 0, duration: 2 }, "<")
@@ -223,25 +228,22 @@ export default function Home() {
           distantGlow.material.opacity = 0.2;
           setGlowInTransit(false);
         })
-        .to(nebulaMaterial.uniforms.uOpacity, { value: 0.2, duration: 2 })
-        .call(() => { connectionsGrid.visible = true; })
-        .fromTo(connectionsGrid.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 3, ease: "power2.out", force3D: true }, "<")
-        .fromTo(connectionsGrid.position, { z: -20 }, { z: -5, duration: 3, ease: "power2.out", force3D: true }, "<")
-        .to(gridMaterial.uniforms.uOpacity, { value: 0.3, duration: 2 }, "<")
-        .to(".tech-section .fade-in", { opacity: 1, duration: 3, rotation: 0.01, force3D: true }, "<")
-        .to(".tech-card", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "-=1")
-        .to({}, { duration: 15 })
-        .to(".tech-section .fade-in", { opacity: 0, duration: 1, force3D: true })
-        .to(".tech-card", { opacity: 0, stagger: -0.05, duration: 1, force3D: true }, "<")
-        .to(gridMaterial.uniforms.uOpacity, { value: 0, duration: 1.5 }, "<")
-        .to(connectionsGrid.scale, { x: 0, y: 0, z: 0, duration: 1.5, onComplete: () => { connectionsGrid.visible = false; } }, "<")
-        .to(nebulaMaterial.uniforms.uOpacity, { value: 1, duration: 2 }, "<")
-        .to({}, { duration: 10 });
+
+        .to(".sectors-section .fade-in", { opacity: 1, rotation: 0.01, duration: 2, force3D: true })
+        .to(".sector-card", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 2, force3D: true }, "<")
+
+        //5. Sectores Out / CTA In 
+        .to({}, { duration: 25 })
+
+        .to(".sectors-section .fade-in", { opacity: 0, duration: 1.5, force3D: true })
+        .to(".sector-card", { opacity: 0, stagger: -0.1, duration: 1.5, force3D: true }, "<")
+
+        .to({}, { duration: 15 });
 
       const tlCTA = gsap.timeline({
         scrollTrigger: {
           trigger: ".cta-section",
-          start: "top center",
+          start: "top 80%",
           end: "+=100%",
           toggleActions: "play none none reverse"
         }
@@ -292,6 +294,8 @@ export default function Home() {
           <div className="md:flex md:flex-row flex-col items-center justify-center md:space-x-4">
             <button onClick={() => handleScrollTo("#inicio")} className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</button>
             <button onClick={() => handleScrollTo("#features")} className="py-2 px-3 block hover:text-[#00CFFF]">Features</button>
+            <button onClick={() => handleScrollTo("#tecnologias")} className="py-2 px-3 block hover:text-[#00CFFF]">Tecnología</button>
+            <button onClick={() => handleScrollTo("#proceso")} className="py-2 px-3 block hover:text-[#00CFFF]">Proceso</button>
             <button onClick={() => handleScrollTo("#sectores")} className="py-2 px-3 block hover:text-[#00CFFF]">Servicios</button>
             <button onClick={() => handleScrollTo("#contacto")} className="py-2 px-3 block hover:text-[#00CFFF]">Contacto</button>
             <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">
@@ -311,7 +315,7 @@ export default function Home() {
           <div className="mx-auto max-w-6xl w-full px-4 grid md:grid-cols-2 items-center gap-12">
             <div className="max-w-md">
               <h2 className="text-4xl font-bold fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Rápido. Fiable. Seguro.</h2>
-              <p className="mt-4 text-lg text-gray-300 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Nuestras soluciones están diseñadas para optimizar tus procesos sin comprometer la seguridad ni la calidad.</p>
+              <p className="mt-4 text-lg text-gray-300 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Soluciones diseñadas para optimizar tus procesos sin comprometer la seguridad ni la calidad.</p>
               <div className="mt-8 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <button onClick={() => handleScrollTo("#proceso")} className="rounded px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-[#00CFFF] hover:text-black">
                   Nuestro Proceso
@@ -324,13 +328,48 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="tecnologias" className="tech-section min-h-screen flex items-center overflow-hidden">
+          <div className="mx-auto max-w-6xl w-full px-4">
+            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Tecnologías Clave</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M12 3v1.5m0 15v1.5m3.75-18v1.5m0 15v1.5m-7.5-15h1.5m-1.5 15h1.5m-4.5-8.25h1.5m1.5 0h1.5m-1.5-3.75h1.5m-1.5 7.5h1.5m-7.5-3.75h1.5m1.5 0h1.5" />
+                </svg>
+                <h3 className="text-2xl font-semibold mt-4">Inteligencia Artificial</h3>
+                <p className="mt-2 text-gray-400">Utilizamos algoritmos de Machine Learning para crear sistemas que aprenden, se adaptan y toman decisiones inteligentes.</p>
+              </div>
+              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.63 2.18a14.98 14.98 0 0 0-5.84 7.38m5.84 2.58v-4.8m0 4.8a14.98 14.98 0 0 1-5.84 7.38m5.84-7.38a14.98 14.98 0 0 1 7.38-5.84m-7.38 5.84-7.38-5.84" />
+                </svg>
+                <h3 className="text-2xl font-semibold mt-4">Automatización (RPA)</h3>
+                <p className="mt-2 text-gray-400">Desplegamos 'robots' de software para ejecutar tareas repetitivas y manuales, liberando a tu equipo para trabajos de mayor valor.</p>
+              </div>
+              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+                </svg>
+                <h3 className="text-2xl font-semibold mt-4">Integración de Sistemas</h3>
+                <p className="mt-2 text-gray-400">Conectamos tus herramientas existentes (ERPs, CRMs) a través de APIs robustas para un flujo de datos sin fisuras.</p>
+              </div>
+            </div>
+            {/* Added Quiénes Somos button */}
+            <div className="mt-16 text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
+              <Link href="/informacion" className="rounded px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-[#00CFFF] hover:text-black transition-colors duration-300">
+                Quiénes Somos
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <section id="proceso" className="process-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4">
-            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Nuestro Proceso Simplificado</h2>
+            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Nuestro Proceso</h2>
             <div className="grid md:grid-cols-3 gap-12">
               <div className="text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <p className="text-6xl font-bold text-[#00CFFF]">01</p>
-                <h3 className="text-2xl font-semibold mt-4">Análisis y Estrategia</h3>
+                <h3 className="text-2xl font-semibold mt-4">Análisis y Diagnóstico</h3>
                 <p className="mt-2 text-gray-400">Estudiamos a fondo tus flujos de trabajo para diseñar una solución a medida que resuelva tus cuellos de botella.</p>
               </div>
               <div className="text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
@@ -377,54 +416,6 @@ export default function Home() {
               <Link href="/tecnologias" className="rounded bg-primary/20 px-6 py-3 text-lg font-semibold text-primary ring-1 ring-primary/50 hover:bg-primary hover:text-black transition-colors duration-300">
                 Ver Arquitectura Tecnológica
               </Link>
-            </div>
-          </div>
-        </section>
-
-        <section id="global" className="globe-section min-h-screen flex flex-col justify-center overflow-hidden">
-          <div className="mx-auto max-w-6xl w-full px-4 relative">
-            <h2 className="text-center text-4xl font-bold fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Proyección Global</h2>
-            <div className="mt-8 text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
-              <Link href="/informacion" className="rounded px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-[#00CFFF] hover:text-black transition-colors duration-300">
-                Quiénes Somos
-              </Link>
-            </div>
-            <div className="fade-in absolute top-1/2 left-20 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
-              <p className="text-5xl font-bold text-[#00CFFF]">50+</p>
-              <p className="text-lg text-gray-300">Proyectos Exitosos</p>
-            </div>
-            <div className="fade-in absolute top-1/3 right-20 text-right will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
-              <p className="text-5xl font-bold text-[#00CFFF]">10+</p>
-              <p className="text-lg text-gray-300">Sectores Industriales</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="tecnologias" className="tech-section min-h-screen flex items-center overflow-hidden">
-          <div className="mx-auto max-w-6xl w-full px-4">
-            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Tecnologías Clave</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M12 3v1.5m0 15v1.5m3.75-18v1.5m0 15v1.5m-7.5-15h1.5m-1.5 15h1.5m-4.5-8.25h1.5m1.5 0h1.5m-1.5-3.75h1.5m-1.5 7.5h1.5m-7.5-3.75h1.5m1.5 0h1.5" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Inteligencia Artificial</h3>
-                <p className="mt-2 text-gray-400">Utilizamos algoritmos de Machine Learning para crear sistemas que aprenden, se adaptan y toman decisiones inteligentes.</p>
-              </div>
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.63 2.18a14.98 14.98 0 0 0-5.84 7.38m5.84 2.58v-4.8m0 4.8a14.98 14.98 0 0 1-5.84 7.38m5.84-7.38a14.98 14.98 0 0 1 7.38-5.84m-7.38 5.84-7.38-5.84" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Automatización (RPA)</h3>
-                <p className="mt-2 text-gray-400">Desplegamos 'robots' de software para ejecutar tareas repetitivas y manuales, liberando a tu equipo para trabajos de mayor valor.</p>
-              </div>
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Integración de Sistemas</h3>
-                <p className="mt-2 text-gray-400">Conectamos tus herramientas existentes (ERPs, CRMs) a través de APIs robustas para un flujo de datos sin fisuras.</p>
-              </div>
             </div>
           </div>
         </section>

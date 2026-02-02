@@ -11,12 +11,10 @@ const certifications = [
   {
     name: "IBM Cloud Essentials",
     image: "/badges/ibm-cloud.png",
-    url: "https://www.credly.com/users/daniel-conde.3a8de20b/badges"
   },
   {
     name: "IBM Python for Data Science",
     image: "/badges/ibm-python.png",
-    url: "https://www.credly.com/users/daniel-conde.3a8de20b/badges"
   }
 ];
 
@@ -34,7 +32,7 @@ export default function TecnologiasPage() {
         y: 30
       });
 
-      // Animación de entrada secuencial
+      // Animación de entrada 
       tl.fromTo(".hero-title",
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
@@ -62,7 +60,7 @@ export default function TecnologiasPage() {
 
     }, mainRef);
 
-    // --- THREE.JS BACKGROUND ---
+    // THREE.JS 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true, antialias: true });
@@ -72,7 +70,6 @@ export default function TecnologiasPage() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.position.setZ(10);
 
-    // -- Estrellas --
     function addStars() {
       const starVertices = [];
       const count = 1000;
@@ -91,7 +88,6 @@ export default function TecnologiasPage() {
     }
     const stars = addStars();
 
-    // -- Polvo Cósmico --
     let dust;
     function addCosmicDust() {
       const dustGeometry = new THREE.BufferGeometry();
@@ -109,7 +105,6 @@ export default function TecnologiasPage() {
     }
     addCosmicDust();
 
-    // Animación Loop
     const animate = () => {
       requestAnimationFrame(animate);
       if (stars) stars.rotation.y += 0.0002;
