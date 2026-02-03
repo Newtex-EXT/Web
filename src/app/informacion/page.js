@@ -111,7 +111,7 @@ const Informacion = () => {
 
     return (
         <div ref={mainRef} className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-black text-white font-sans selection:bg-primary/30">
-            {/* Background Decor */}
+            {/* Background */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-900/20 rounded-full blur-[120px]"></div>
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[100px]"></div>
@@ -126,7 +126,8 @@ const Informacion = () => {
                 <div className="hidden md:flex flex-row items-center justify-center space-x-4">
                     <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Inicio</Link>
                     <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Features</Link>
-                    <Link href="/#sectores" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Servicios</Link>
+                    <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Tecnologias</Link>
+                    <Link href="/#proceso" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Proceso</Link>
                     <Link href="/Contacto" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Contacto</Link>
                     <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">
                         Solicitar Demo
@@ -135,7 +136,7 @@ const Informacion = () => {
             </header>
 
             <main className="relative z-10 flex-1 pt-24">
-                {/* Hero Section */}
+                {/* Hero */}
                 <section className="relative mx-auto w-full max-w-7xl px-6 lg:px-8 pt-12 pb-24">
                     <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-white/10 shadow-2xl shadow-primary/10 group h-[650px] flex items-end">
                         <div
@@ -148,144 +149,138 @@ const Informacion = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-[#101022] via-[#101022]/40 to-transparent"></div>
                         <div className="relative z-10 w-full px-8 pb-16 md:px-16">
                             <div className="max-w-4xl">
-                                <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-blue-300 animate-fade-up">
-                                    <span className="relative flex h-2 w-2">
-                                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
-                                        <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
-                                    </span>
-                                    Infraestructura Next Gen
-                                </div>
+
                                 <h1 className="animate-fade-up text-6xl font-black tracking-tighter text-white sm:text-7xl md:text-8xl lg:text-9xl mb-10 font-['Trebuchet_MS'] leading-[0.9]">
-                                    El Motor <br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">Digital Central</span>
+                                    ¿Quienes <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">somos?</span>
                                 </h1>
-                                <p className="animate-fade-up max-w-2xl text-xl text-slate-300 leading-relaxed font-light border-l-2 border-primary pl-8 ml-2">
-                                    NEWTEX diseña la columna vertebral invisible de la empresa moderna. Proporcionamos la densidad computacional y la arquitectura de datos soberana requerida para la inteligencia del mañana.
+                                <p className="animate-fade-up max-w-2xl text-xl text-slate-200 leading-relaxed font-light border-l-2 border-primary pl-8 ml-2">
+                                    En NEWTEX, somos un equipo multidisciplinar de jóvenes profesionales apasionados por la tecnología y la eficiencia operativa. NEWTEX nace de la convicción de que la digitalización no debe ser un lujo, sino una inversión con beneficios medibles ; por ello, nuestra misión es actuar como el puente tecnológico que las PYMES necesitan para liderar la era digital. No solo desarrollamos software, sino que acompañamos a nuestros clientes en su transición hacia la Industria 4.0 con soluciones robustas, escalables y diseñadas para durar.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Bento Grid Capabilities */}
                 <section className="mx-auto w-full max-w-7xl px-6 lg:px-8 pb-32">
-                    <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8 animate-fade-up">
-                        <div>
-                            <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Capacidades del Sistema</h2>
-                            <p className="mt-3 text-lg text-slate-400">Soluciones empresariales modulares diseñadas para escalar.</p>
-                        </div>
-                        <Link className="group flex items-center gap-2 text-base font-bold text-primary hover:text-white transition-colors" href="/tecnologias">
-                            Ver Especificaciones
-                            <span className="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
-                        </Link>
-                    </div>
+                    <div className="grid auto-rows-[minmax(180px,auto)] grid-cols-1 md:grid-cols-4 gap-6">
 
-                    <div className="grid auto-rows-[minmax(280px,auto)] grid-cols-1 md:grid-cols-4 gap-8">
-                        {/* Large Card 1 */}
-                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 row-span-2 overflow-hidden rounded-2xl p-10 border border-white/10 bg-white/5 hover:border-primary/50 transition-all duration-300 flex flex-col justify-between">
-                            <div className="absolute right-0 top-0 h-full w-2/3 bg-gradient-to-l from-primary/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-                            <div className="relative z-10">
-                                <div className="mb-6 inline-flex size-14 items-center justify-center rounded-xl bg-white/5 border border-white/10 shadow-inner">
-                                    <span className="material-symbols-outlined text-4xl text-white">memory</span>
-                                </div>
-                                <h3 className="text-3xl font-bold text-white mb-2">Unidades de Procesamiento Neuronal</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed max-w-md">
-                                    Arquitectura de silicio propietaria optimizada para LLMs e inferencia en tiempo real en el borde. Nuestros clústeres NPU ofrecen un 40% más de eficiencia por vatio.
+                        {/* 1. Header */}
+                        <div id="catalogo-de-servicios" className="col-span-1 md:col-span-4 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10 animate-fade-up">
+                            <div>
+                                <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Catálogo de servicios</h2>
+                                <p className="mt-3 text-lg text-slate-400">Servicios base, soluciones 100% personalizadas.</p>
+                            </div>
+                            <Link className="group flex items-center gap-2 text-base font-bold text-primary hover:text-white transition-colors" href="/tecnologias">
+
+                                <span className="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1"></span>
+                            </Link>
+                        </div>
+
+                        {/* 1. TARJETA HERO SUPERIOR */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-4 overflow-hidden rounded-xl p-8 md:p-10 flex flex-col justify-center border border-primary/20 hover:border-primary/50 transition-colors min-h-[300px]">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50"></div>
+                            <div className="relative z-10 max-w-3xl">
+
+                                <h3 className="text-3xl font-bold text-white mb-4">Consultoría de Procesos</h3>
+                                <p className="text-lg text-slate-300">
+                                    Nuestra plataforma elimina los silos de datos conectando tu ERP, CRM y sistemas legacy en una única fuente de verdad en tiempo real. Diseñada para soportar cargas de trabajo críticas sin latencia.
                                 </p>
                             </div>
-                            <div className="relative z-10 mt-10">
-                                <div
-                                    className="h-56 w-full rounded-xl bg-slate-800/50 border border-white/5 bg-cover bg-center shadow-2xl"
-                                    role="img"
-                                    aria-label="Primer plano de chip informático futurista"
-                                    style={{ backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuDIHagUzwpt5CxKcyz0Jr0SFDdAZLWHkYrU5b67-bu7lXUy6Aop-M_5wn_jFxSkxdt1RDOkIfywWe7yF19gf0aksOqOrt-qKeBy4IIO7O2MtVuSi_fPCZQ2KEJcfH9aCqp0fZb-cj-48CdxkPHMk-9ZhteEv9KOGusFX_THOuqOs1NuGPfI5DgCDdGZnJuPmCkKKZx5zvrMdSJI1w7a3xXTQKWD-rIdfBxz9xkcREWE44SDPKiGicLd62quaysRYUoREoFZQgLq9yw")` }}
-                                ></div>
+                        </div>
+
+                        {/* BLOQUE 2 */}
+
+                        {/* 1. TARJETA: Asistente virtual 24/7 */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col justify-center border border-primary/20 hover:border-primary/50 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+                            <div className="relative z-10">
+
+                                <h3 className="text-3xl font-bold text-white mb-4">Asistente virtual 24/7</h3>
+                                <p className="text-lg text-slate-300 leading-relaxed">Respuesta inmediata, un chatbot inteligente que captura clientes, resuelve dudas y agenda reuniones mientras tú te enfocas en lo importante.</p>
                             </div>
                         </div>
 
-                        {/* Medium Card 2 */}
-                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-1 row-span-1 overflow-hidden rounded-2xl p-8 border border-white/10 bg-white/5 hover:bg-white/10 transition-colors">
-                            <div className="flex flex-col h-full justify-between gap-4">
-                                <span className="material-symbols-outlined text-5xl text-primary">security</span>
-                                <div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Grid Zero-Trust</h3>
-                                    <p className="text-base text-slate-400 leading-snug">Protocolos de encriptación resistentes a cuántica integrados en hardware.</p>
-                                </div>
+                        {/* 2. TARJETA: CRM inteligente */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col justify-center border border-primary/20 hover:border-primary/50 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+                            <div className="relative z-10">
+
+                                <h3 className="text-3xl font-bold text-white mb-4">CRM inteligente</h3>
+                                <p className="text-lg text-slate-300 leading-relaxed">Vende más a quienes ya te conocen, centraliza tus contactos y automatiza el seguimiento de clientes para que nunca se te escape una oportunidad.</p>
                             </div>
                         </div>
 
-                        {/* Medium Card 3 */}
-                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-1 row-span-1 overflow-hidden rounded-2xl p-8 border border-white/10 bg-white/5 hover:bg-white/10 transition-colors">
-                            <div className="flex flex-col h-full justify-between gap-4">
-                                <span className="material-symbols-outlined text-5xl text-primary">globe</span>
-                                <div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Global Edge</h3>
-                                    <p className="text-base text-slate-400 leading-snug">Latencia inferior a 5ms en centros financieros vía fibra privada.</p>
-                                </div>
+                        {/* 3. TARJETA: Centro de Control de Pedidos */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col justify-center border border-primary/20 hover:border-primary/50 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+                            <div className="relative z-10">
+
+                                <h3 className="text-3xl font-bold text-white mb-4">Centro de Control de Pedidos</h3>
+                                <p className="text-lg text-slate-300 leading-relaxed">Adiós al caos administrativo. Unificamos todos tus canales de venta en un solo panel para eliminar errores manuales y agilizar toda tu logística.</p>
                             </div>
                         </div>
 
-                        {/* Wide Card 4 */}
-                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 row-span-1 overflow-hidden rounded-2xl p-8 border border-white/10 bg-white/5 hover:border-primary/50 transition-colors flex items-center">
-                            <div className="grid grid-cols-2 w-full gap-8 items-center">
-                                <div>
-                                    <h3 className="text-2xl font-bold text-white mb-4">Analítica Cognitiva</h3>
-                                    <p className="text-slate-400 text-base mb-6 leading-relaxed">Síntesis de datos en tiempo real para sistemas de soporte a la decisión.</p>
-                                    <button className="text-xs font-bold uppercase tracking-widest text-white border-b border-primary pb-1 hover:border-white transition-colors">
-                                        Más Información
-                                    </button>
-                                </div>
-                                <div
-                                    className="h-full min-h-[160px] w-full rounded-xl bg-cover bg-center opacity-80 border border-white/5"
-                                    role="img"
-                                    aria-label="Gráfico de visualización de datos abstracto"
-                                    style={{ backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCbpnETTWVn1ukDa8g9Mo2_6gsZbJqkOs8Dq--KGMM4bCc64GB22EisNaWw7Xi8FiavVfY0BdtQHDkJSl3IWqJcKXV0YSOcWDyWAAmaHh1t0B7twpzdqc_6xQ5UHTFL3vSaF0Vbn-4H3HKQLocBtHsNcDiMYL7mYyULPWFpRUlK81SSrZfmAk0J2nsgN1nDiqJIYFpu7wOCKbF8luLp8v4RYy_6nxkCyM_P0yS4Jm4uo_Zq-WgUrhstXg4xs8UAnvzGo4wci088RqY")` }}
-                                ></div>
+                        {/* 4. TARJETA: Documentación Automática */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col justify-center border border-primary/20 hover:border-primary/50 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+                            <div className="relative z-10">
+
+                                <h3 className="text-3xl font-bold text-white mb-4">Documentación Automática</h3>
+                                <p className="text-lg text-slate-300 leading-relaxed">De horas de papeleo a un solo clic, genera facturas, presupuestos y contratos personalizados en PDF de forma instantánea y sin errores humanos.</p>
                             </div>
                         </div>
 
-                        {/* Tall Card 5 */}
-                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-1 row-span-2 overflow-hidden rounded-2xl p-0 border border-white/10 bg-white/5 hover:border-primary/50 transition-colors">
-                            <div
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                                role="img"
-                                aria-label="Pasillo de racks de servidores"
-                                style={{ backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCOqJ_FY818fnqhDkTmWsxFPiRHd_l8V59FgT2kskW7rht5-qw-8Rm5dJN12nwbnh6PX6BdwZLGugD4t1eV8aLJfQrVt3_sSGj0sj5otJr03xN5yRxDNIkstTpccENiCQjqNbHrtOEywAMJzGgc0inD77AIhW4ds_nfQsZhKy511ytWTKwEoogNGJX8gH8hIFxPulQ7rZf8cVu5urB9dWXrmvIXORkN_VT9ICaQLW_Jd69lsWRKIG9axFtw031Civ1W8jrquTBLt6I")` }}
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
-                            </div>
-                            <div className="relative z-10 flex h-full flex-col justify-end p-8">
-                                <h3 className="text-2xl font-bold text-white mb-3">Green Data</h3>
-                                <p className="text-base text-slate-300 leading-snug">Compromiso de energía 100% renovable para todas las instalaciones Tier 4.</p>
+                        {/* 4. SEPARADOR */}
+                        <div id="areas-de-impacto" className="col-span-1 md:col-span-2 flex items-end mt-24">
+                            <h2 className="text-3xl font-bold tracking-tight text-white">Áreas de impacto</h2>
+                        </div>
+                        <div className="hidden md:block col-span-1 md:col-span-2 border-b border-white/10 mb-2 mt-24"></div>
+
+                        {/* TARJETA "Gestión Administrativa" */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col justify-center border border-primary/20 hover:border-primary/50 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+                            <div className="relative z-10">
+
+                                <h3 className="text-3xl font-bold text-white mb-4">Gestión Administrativa</h3>
+                                <p className="text-lg text-slate-300 leading-relaxed">Digitalizamos el motor de tu empresa eliminando tareas manuales y papeleo. Automatizamos la creación de facturas, presupuestos y contratos en segundos, centralizando toda tu información para evitar errores humanos.</p>
                             </div>
                         </div>
 
-                        {/* Small Card 6 */}
-                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-1 row-span-1 overflow-hidden rounded-2xl p-8 border border-white/10 bg-white/5 flex flex-col justify-center items-center text-center hover:bg-white/10 transition-colors">
-                            <div className="text-5xl font-black text-white mb-2">99.999%</div>
-                            <div className="text-xs uppercase tracking-widest text-primary font-bold">Garantía de Uptime</div>
-                        </div>
+                        {/* TARJETA "Operaciones y Logística" */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col justify-center border border-primary/20 hover:border-primary/50 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+                            <div className="relative z-10">
 
-                        {/* Small Card 7 */}
-                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-1 row-span-1 overflow-hidden rounded-2xl p-8 border border-white/10 bg-white/5 flex flex-col justify-center items-center text-center hover:bg-white/10 transition-colors">
-                            <div className="text-5xl font-black text-white mb-2">24/7</div>
-                            <div className="text-xs uppercase tracking-widest text-primary font-bold">Monitorización NOC</div>
-                        </div>
-
-                        {/* Wide Footer Card 8 */}
-                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 row-span-1 overflow-hidden rounded-2xl px-10 py-8 border border-white/10 bg-white/5 flex items-center justify-between hover:border-primary/50 transition-colors">
-                            <div>
-                                <div className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">Caso de Estudio</div>
-                                <div className="text-xl font-bold text-white">Migración Vertex Financial</div>
-                            </div>
-                            <div className="flex size-12 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition-transform group-hover:rotate-45 group-hover:bg-primary group-hover:border-primary group-hover:text-black">
-                                <span className="material-symbols-outlined text-2xl">arrow_outward</span>
+                                <h3 className="text-3xl font-bold text-white mb-4">Operaciones y Logística</h3>
+                                <p className="text-lg text-slate-300 leading-relaxed">Unificamos tus canales de venta en un solo panel de control digital. Mediante conectores inteligentes, registramos cada pedido en tiempo real, erradicando el caos administrativo y garantizando la trazabilidad total de tu stock.</p>
                             </div>
                         </div>
+
+                        {/* TARJETA "Atención al Cliente" */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col justify-center border border-primary/20 hover:border-primary/50 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+                            <div className="relative z-10">
+
+                                <h3 className="text-3xl font-bold text-white mb-4">Atención al Cliente</h3>
+                                <p className="text-lg text-slate-300 leading-relaxed">Implementamos asistentes inteligentes que capturan contactos y agendan reuniones 24/7 de forma autónoma. Automatizamos el seguimiento estratégico de clientes para aumentar tus ventas sin que tengas que intervenir.</p>
+                            </div>
+                        </div>
+
+                        {/* TARJETA "Estrategia y Toma de Decisiones" */}
+                        <div className="capability-card group glass-panel relative col-span-1 md:col-span-2 overflow-hidden rounded-2xl p-8 md:p-10 flex flex-col justify-center border border-white/10 hover:border-primary/50 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+                            <div className="relative z-10">
+
+                                <h3 className="text-3xl font-bold text-white mb-4">Estrategia y Toma de Decisiones.</h3>
+                                <p className="text-lg text-slate-300 leading-relaxed">Detectamos ineficiencias y cuellos de botella mediante auditorías técnicas exhaustivas. Diseñamos soluciones a medida que garantizan un retorno de inversión rápido, permitiéndote gestionar tu negocio basándote en datos reales.</p>
+                            </div>
+                        </div>
+
                     </div>
                 </section>
 
-                {/* Certifications Strip */}
+                {/* CertificadosStrip */}
                 <section className="w-full bg-[#0a0a18] border-y border-white/5 py-16 certs-container">
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
                         <h3 className="mb-12 text-sm font-bold uppercase tracking-[0.2em] text-slate-500 text-center animate-fade-up">Estándares de Cumplimiento Certificados</h3>

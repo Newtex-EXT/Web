@@ -1,10 +1,10 @@
 
 const BarChart = ({ data }) => {
     const maxVal = Math.max(...data);
-    const chartHeight = 100; // viewBox height assumed 100
-    const chartWidth = 100; // viewBox width assumed 100
-    const barWidth = 80 / data.length; // 80% width usable for bars
-    const gap = 20 / (data.length - 1); // 20% total gap space
+    const chartHeight = 100;
+    const chartWidth = 100;
+    const barWidth = 80 / data.length;
+    const gap = 20 / (data.length - 1);
 
     return (
         <div className="w-full aspect-video bg-white/5 rounded-xl border border-white/10 relative overflow-hidden flex items-end p-2">
@@ -14,16 +14,11 @@ const BarChart = ({ data }) => {
                 preserveAspectRatio="none"
             >
                 {data.map((value, index) => {
-                    // Calculate height based on data value relative to max
-                    // We'll give it a minimum height of 5 so it's visible even if low
                     const height = Math.max((value / maxVal) * chartHeight, 5);
                     const x = index * (barWidth + gap);
                     const y = chartHeight - height;
 
-                    // Simple opacity modulation for visual variety as seen in original mockup
                     const opacityClass = index % 2 === 0 ? "opacity-80" : "opacity-50";
-                    // Or calculate opacity based on index/sequence to match the gradient look of the original:
-                    // Original had: primary/20, primary/40, primary/60, primary, primary/40
                     let op = 0.4;
                     if (index === 3) op = 1;
                     else if (index === 2) op = 0.6;
@@ -40,7 +35,7 @@ const BarChart = ({ data }) => {
                             height={`${height}%`}
                             className="fill-primary transition-all duration-500 hover:fill-[#00CFFF]"
                             fillOpacity={op}
-                            rx="2" // Rounded top corners approximation (rx scales with coord system so might be small)
+                            rx="2"
                         />
                     );
                 })}
@@ -53,8 +48,8 @@ export default function PhoneMockup() {
     const chartData = [50, 75, 60, 90, 80];
 
     return (
-        <div className="relative w-[280px] h-[580px] bg-[#0a1518] rounded-[3rem] border-[8px] border-[#1a3a40] shadow-2xl overflow-hidden group">
-            {/* Mockup Screen Content */}
+        <div className="relative w-[280px] h-[580px] bg-[#0a1518] rounded-[3rem] border-[8px] border-[#454545] shadow-2xl overflow-hidden group">
+            {/* Screen Content */}
             <div className="absolute inset-0 bg-background-dark p-6 flex flex-col gap-6">
                 <div className="flex items-center justify-between text-white/40">
                     <span className="text-xs font-bold">9:41</span>
@@ -67,7 +62,7 @@ export default function PhoneMockup() {
                 <div className="flex flex-col gap-4">
                     <div className="h-1 bg-white/10 w-8 rounded-full"></div>
                     <h3 className="text-white text-lg font-bold">Panel de Control</h3>
-                    {/* Mini Stats in Mockup */}
+                    {/* Stats in Mockup */}
                     <div className="grid grid-cols-2 gap-2">
                         <div className="bg-white/5 p-3 rounded-xl border border-white/10">
                             <p className="text-[10px] text-primary">STATUS</p>
@@ -78,7 +73,7 @@ export default function PhoneMockup() {
                             <p className="text-sm font-bold">24%</p>
                         </div>
                     </div>
-                    {/* Mini Chart Mockup */}
+                    {/* Charts */}
                     <BarChart data={chartData} />
                     <div className="flex flex-col gap-2">
                         <div className="w-full h-12 bg-white/5 rounded-lg border border-white/10 flex items-center px-3 gap-3">
@@ -96,7 +91,7 @@ export default function PhoneMockup() {
                     </div>
                 </div>
             </div>
-            {/* Mockup Highlight */}
+            {/* Highlight */}
             <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/5 to-transparent"></div>
         </div>
     );
