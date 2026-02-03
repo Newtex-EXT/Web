@@ -119,7 +119,7 @@ const Solicitud = () => {
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
             </div>
 
-            {/* Navigation (Matching Original Design) */}
+            {/* Navigation */}
             <header className="fixed top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 bg-black/50 backdrop-blur-sm border-b border-white/5">
                 <Link href="/">
                     <Logo className="w-auto h-12 text-blue-900 mt-2" />
@@ -127,22 +127,23 @@ const Solicitud = () => {
                 <div className="hidden md:flex flex-row items-center justify-center space-x-4">
                     <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Inicio</Link>
                     <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Features</Link>
-                    <Link href="/#sectores" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Servicios</Link>
+                    <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Tecnologias</Link>
+                    <Link href="/#proceso" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Proceso</Link>
                     <Link href="/Contacto" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Contacto</Link>
                     <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">
                         Solicitar Demo
                     </Link>
                 </div>
-                {/* Mobile Menu Placeholder - Optional for this view */}
+
                 <div className="md:hidden">
-                    {/* Add hamburger if needed, kept simple for now matching desktop priority */}
+
                 </div>
             </header>
 
-            {/* Main Content Split Screen */}
+            {/* Main Content */}
             <main className="relative z-10 flex-grow flex flex-col lg:flex-row max-w-7xl mx-auto w-full px-6 py-28 lg:py-36 gap-16 lg:gap-24 items-start">
 
-                {/* Left Side: Value Proposition */}
+                {/* Left Side */}
                 <div className="flex-1 flex flex-col justify-center space-y-12 pt-4 animate-left">
                     {/* Headline */}
                     <div className="space-y-6">
@@ -158,7 +159,7 @@ const Solicitud = () => {
                         </p>
                     </div>
 
-                    {/* Feature List */}
+                    {/* Feature */}
                     <div className="space-y-8">
                         <div className="flex gap-6 items-start p-5 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 group">
                             <div className="flex-shrink-0 size-14 rounded-lg bg-[#1a2e33] flex items-center justify-center text-primary border border-white/10 shadow-lg group-hover:scale-110 transition-transform">
@@ -189,11 +190,11 @@ const Solicitud = () => {
                         </div>
                     </div>
 
-                    {/* Partner Badges */}
+                    {/* Badges */}
                     <div className="pt-10 border-t border-white/10">
                         <p className="text-sm text-gray-500 mb-6 uppercase tracking-wider font-bold">Confían en nosotros equipos innovadores</p>
                         <div className="flex flex-wrap gap-8 items-center opacity-50 hover:opacity-100 transition-opacity">
-                            {/* Placeholders for logos */}
+                            {/* logos */}
                             <div className="h-8 w-24 bg-white/20 rounded animate-pulse"></div>
                             <div className="h-8 w-24 bg-white/20 rounded animate-pulse delay-75"></div>
                             <div className="h-8 w-24 bg-white/20 rounded animate-pulse delay-150"></div>
@@ -202,10 +203,9 @@ const Solicitud = () => {
                     </div>
                 </div>
 
-                {/* Right Side: Glassmorphism Form */}
+                {/* Right Side */}
                 <div className="flex-1 w-full max-w-lg lg:sticky lg:top-36 animate-form-card">
                     <div className="relative group perspective-1000">
-                        {/* Glow effect behind card */}
                         <div className="absolute -inset-1 bg-gradient-to-r from-primary to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
 
                         <div className="relative bg-[#132328]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-10 shadow-2xl transform transition-transform duration-500 hover:scale-[1.01]">
@@ -275,7 +275,7 @@ const Solicitud = () => {
                                     </div>
                                 </div>
 
-                                {/* Role & Interest (Fixed Selects) */}
+                                {/* Role & Interest */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-1 form-field">
                                         <label className="text-xs font-bold text-gray-400 uppercase tracking-wide ml-1" htmlFor="role">Cargo / Rol</label>
@@ -334,7 +334,7 @@ const Solicitud = () => {
                 </div>
             </main>
 
-            {/* Footer (Matching Original Design) */}
+            {/* Footer */}
             <footer className="w-full border-t border-white/10 bg-black/80 backdrop-blur-md relative z-50">
                 <div className="mx-auto max-w-7xl px-5 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-4">

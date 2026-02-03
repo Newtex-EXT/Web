@@ -118,12 +118,12 @@ export default function Home() {
       gsap.timeline({ scrollTrigger: { trigger: ".hero-section", end: "+=600%", ...pinConfig, id: "inicio" } });
       gsap.timeline({ scrollTrigger: { trigger: ".features-section", end: "+=1200%", ...pinConfig, id: "features" } });
       gsap.timeline({ scrollTrigger: { trigger: ".tech-section", end: "+=1200%", ...pinConfig, id: "tecnologias" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=1200%", ...pinConfig, id: "proceso" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".sectors-section", end: "+=1400%", ...pinConfig, id: "sectores" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=1700%", ...pinConfig, id: "proceso" } });
+      // Sectors section removed
       gsap.timeline({ scrollTrigger: { trigger: ".cta-section", end: "+=100%", ...pinConfig, id: "contacto" } });
 
       const introTl = gsap.timeline();
-      gsap.set(".hero-title, .hero-subtitle, .fade-in, .sector-card, .tech-card", {
+      gsap.set(".hero-title, .hero-subtitle, .fade-in, .tech-card", {
         rotation: 0.01, z: 0.1, force3D: true
       });
       introTl
@@ -142,8 +142,6 @@ export default function Home() {
       gsap.set(".tech-section .fade-in", { opacity: 0, rotation: 0.01 });
       gsap.set(".tech-card", { opacity: 0, y: 50, rotation: 0.01 });
       gsap.set(".process-section .fade-in", { opacity: 0, y: 50, rotation: 0.01 });
-      gsap.set(".sectors-section .fade-in", { opacity: 0, rotation: 0.01 });
-      gsap.set(".sector-card", { opacity: 0, y: 50, rotation: 0.01 });
 
       const tl = gsap.timeline({
         scrollTrigger: { trigger: mainRef.current, start: "top top", end: "bottom bottom", scrub: 1 }
@@ -207,8 +205,8 @@ export default function Home() {
         .to(distantGlow.material, { opacity: 0, duration: 2, ease: "power2.out" })
         .set(globePoints, { visible: true }, "<")
         .set(constellation, { visible: true }, "<")
-        .fromTo(globePoints.scale, { x: 0, y: 0, z: 0 }, { x: 0.65, y: 0.65, z: 0.65, duration: 3, ease: "power3.out", force3D: true }, "<")
-        .fromTo(constellation.scale, { x: 0, y: 0, z: 0 }, { x: 0.8, y: 0.8, z: 0.8, duration: 3, ease: "power3.out", force3D: true }, "<")
+        .fromTo(globePoints.scale, { x: 0, y: 0, z: 0 }, { x: 0.65, y: 0.65, z: 0.65, duration: 1.5, ease: "power3.out", force3D: true }, "<0.2") // Faster, more explosive
+        .fromTo(constellation.scale, { x: 0, y: 0, z: 0 }, { x: 1.8, y: 1.8, z: 1.8, duration: 3, ease: "power3.out", force3D: true }, "<") // Larger scale
         .fromTo(constellation.children[0].material, { opacity: 0 }, { opacity: 0.5, duration: 2, ease: "power2.out" }, "<0.5")
         .fromTo(constellation.children[1].material, { opacity: 0 }, { opacity: 0.3, duration: 2, ease: "power2.out" }, "<0.5")
 
@@ -229,16 +227,10 @@ export default function Home() {
           setGlowInTransit(false);
         })
 
-        .to(".sectors-section .fade-in", { opacity: 1, rotation: 0.01, duration: 2, force3D: true })
-        .to(".sector-card", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 2, force3D: true }, "<")
+        .to({}, { duration: 10 })
+        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
 
-        //5. Sectores Out / CTA In 
-        .to({}, { duration: 25 })
-
-        .to(".sectors-section .fade-in", { opacity: 0, duration: 1.5, force3D: true })
-        .to(".sector-card", { opacity: 0, stagger: -0.1, duration: 1.5, force3D: true }, "<")
-
-        .to({}, { duration: 15 });
+        .to({}, { duration: 5 });
 
       const tlCTA = gsap.timeline({
         scrollTrigger: {
@@ -296,7 +288,6 @@ export default function Home() {
             <button onClick={() => handleScrollTo("#features")} className="py-2 px-3 block hover:text-[#00CFFF]">Features</button>
             <button onClick={() => handleScrollTo("#tecnologias")} className="py-2 px-3 block hover:text-[#00CFFF]">Tecnología</button>
             <button onClick={() => handleScrollTo("#proceso")} className="py-2 px-3 block hover:text-[#00CFFF]">Proceso</button>
-            <button onClick={() => handleScrollTo("#sectores")} className="py-2 px-3 block hover:text-[#00CFFF]">Servicios</button>
             <button onClick={() => handleScrollTo("#contacto")} className="py-2 px-3 block hover:text-[#00CFFF]">Contacto</button>
             <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">
               Solicitar Demo
@@ -332,32 +323,17 @@ export default function Home() {
           <div className="mx-auto max-w-6xl w-full px-4">
             <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Tecnologías Clave</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M12 3v1.5m0 15v1.5m3.75-18v1.5m0 15v1.5m-7.5-15h1.5m-1.5 15h1.5m-4.5-8.25h1.5m1.5 0h1.5m-1.5-3.75h1.5m-1.5 7.5h1.5m-7.5-3.75h1.5m1.5 0h1.5" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Inteligencia Artificial</h3>
-                <p className="mt-2 text-gray-400">Utilizamos algoritmos de Machine Learning para crear sistemas que aprenden, se adaptan y toman decisiones inteligentes.</p>
-              </div>
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.63 2.18a14.98 14.98 0 0 0-5.84 7.38m5.84 2.58v-4.8m0 4.8a14.98 14.98 0 0 1-5.84 7.38m5.84-7.38a14.98 14.98 0 0 1 7.38-5.84m-7.38 5.84-7.38-5.84" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Automatización (RPA)</h3>
-                <p className="mt-2 text-gray-400">Desplegamos 'robots' de software para ejecutar tareas repetitivas y manuales, liberando a tu equipo para trabajos de mayor valor.</p>
-              </div>
-              <div className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Integración de Sistemas</h3>
-                <p className="mt-2 text-gray-400">Conectamos tus herramientas existentes (ERPs, CRMs) a través de APIs robustas para un flujo de datos sin fisuras.</p>
-              </div>
-            </div>
-            {/* Added Quiénes Somos button */}
-            <div className="mt-16 text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
-              <Link href="/informacion" className="rounded px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-[#00CFFF] hover:text-black transition-colors duration-300">
-                Quiénes Somos
+              <Link href="/informacion" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
+                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">corporate_fare</span>
+                <h3 className="text-2xl font-semibold mt-4">Quienes somos</h3>
+              </Link>
+              <Link href="/informacion#catalogo-de-servicios" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
+                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">design_services</span>
+                <h3 className="text-2xl font-semibold mt-4">Catálogo de servicios</h3>
+              </Link>
+              <Link href="/informacion#areas-de-impacto" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
+                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">trending_up</span>
+                <h3 className="text-2xl font-semibold mt-4">Áreas de impacto</h3>
               </Link>
             </div>
           </div>
@@ -386,39 +362,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="sectores" className="sectors-section min-h-screen flex items-center overflow-hidden">
-          <div className="mx-auto max-w-6xl w-full px-4">
-            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Sectores que Impulsamos</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 2.25 12v-1.5a1.125 1.125 0 0 1 1.125-1.125H5.25m17.25 9V14.25a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 0-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125H18.75m-9-9v-1.875a3.375 3.375 0 0 1 3.375-3.375h1.5A1.125 1.125 0 0 1 15 5.25v1.5c0 .621-.504 1.125-1.125 1.125h-1.5a3.375 3.375 0 0 1-3.375-3.375Z" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Logística y Almacenamiento</h3>
-                <p className="mt-2 text-gray-400">Optimización de inventario, rutas de entrega y gestión de almacenes para una eficiencia máxima.</p>
-              </div>
-              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414-.336.75-.75.75h-.75a.75.75 0 0 1-.75-.75v-.75m0-3-3-3m0 0-3 3m3-3v11.25m6-2.25h.75a.75.75 0 0 0 .75-.75V7.5h-.75A.75.75 0 0 0 21 6.75v.75m0 3.75-3 3m0 0-3-3m3 3V3.75" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Finanzas y Banca</h3>
-                <p className="mt-2 text-gray-400">Automatización de informes, análisis de riesgos y procesamiento de transacciones para reducir errores y costes.</p>
-              </div>
-              <div className="sector-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#00CFFF" className="h-12 w-12 mx-auto mb-4" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h12A2.25 2.25 0 0 0 20.25 14.25V3m-16.5 0h16.5m-16.5 0H3.75m16.5 0H20.25m0 0h-3.75m-12.75 0h3.75m-3.75 0V1.5m16.5 1.5V1.5m-12.75 3H12m-3.75 3H12m-3.75 3H12" />
-                </svg>
-                <h3 className="text-2xl font-semibold mt-4">Manufactura e Industria</h3>
-                <p className="mt-2 text-gray-400">Implementación de robótica y sistemas de control para optimizar la cadena de producción y la calidad.</p>
-              </div>
-            </div>
-            <div className="mt-16 text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
-              <Link href="/tecnologias" className="rounded bg-primary/20 px-6 py-3 text-lg font-semibold text-primary ring-1 ring-primary/50 hover:bg-primary hover:text-black transition-colors duration-300">
-                Ver Arquitectura Tecnológica
-              </Link>
-            </div>
-          </div>
-        </section>
+        {/*
+        <div className="mt-16 text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
+          <Link href="/tecnologias" className="rounded bg-primary/20 px-6 py-3 text-lg font-semibold text-primary ring-1 ring-primary/50 hover:bg-primary hover:text-black transition-colors duration-300">
+            Ver Arquitectura Tecnológica
+          </Link>
+        </div>
+        */}
 
         <section id="contacto" className="cta-section min-h-screen flex flex-col justify-center items-center text-center overflow-hidden">
           <div className="mx-auto max-w-5xl px-4 relative z-10">

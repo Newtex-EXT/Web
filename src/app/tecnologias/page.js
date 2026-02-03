@@ -133,7 +133,7 @@ export default function TecnologiasPage() {
     <div ref={mainRef} className="h-screen w-screen overflow-hidden bg-black text-white selection:bg-[#00CFFF] selection:text-black font-sans flex flex-col relative">
       <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 h-full w-full pointer-events-none" />
 
-      {/* Navbar Compacto */}
+      {/* Navbar */}
       <header className="fixed top-0 z-50 w-full mx-auto flex items-center justify-between px-6 py-2 transition-colors duration-300 bg-black/50 backdrop-blur-sm">
         <Logo className="w-auto h-8 text-[#00CFFF]" />
         <div className="md:flex md:flex-row flex-col items-center justify-center md:space-x-4 text-xs font-medium uppercase tracking-wider">
@@ -144,14 +144,14 @@ export default function TecnologiasPage() {
         </div>
       </header>
 
-      {/* Main Content - Single Viewport Centered */}
+      {/* Main Content */}
       <main className="flex-grow flex flex-col justify-center items-center relative w-full h-full scale-90 origin-center">
-        {/* Fondo Atmosférico */}
+
         <div className="absolute inset-0 opacity-40 pointer-events-none" style={{
           backgroundImage: "radial-gradient(circle at center, #001133 0%, transparent 70%)"
         }}></div>
 
-        {/* Títulos Compactos */}
+        {/* Títulos */}
         <div className="relative z-10 text-center mb-8 px-4 mt-8">
           <h1 className="hero-title text-4xl md:text-5xl font-extrabold leading-tight mb-2">
             El Monolito de <span className="text-[#00CFFF]">Datos</span>
@@ -161,7 +161,7 @@ export default function TecnologiasPage() {
           </p>
         </div>
 
-        {/* Contenedor Central 3D Visual */}
+        {/* Contenedor Central */}
         <div className="monolith-container relative flex items-center justify-center w-full max-w-4xl h-[450px]">
           {/* El Monolito */}
           <div className="absolute w-24 h-[380px] bg-gradient-to-b from-[#00CFFF]/20 via-[#00CFFF]/5 to-transparent rounded-xl border border-[#00CFFF]/30 z-20 flex items-center justify-center group overflow-hidden shadow-[0_0_50px_rgba(0,207,255,0.2)]">
@@ -174,7 +174,7 @@ export default function TecnologiasPage() {
             </div>
           </div>
 
-          {/* Tarjetas Flotantes (Compactas) */}
+          {/* Tarjetas Flotantes */}
           <div className="float-card absolute left-[2%] md:left-[12%] top-[10%] p-4 rounded-xl border border-[#00CFFF]/20 bg-black/40 backdrop-blur-md w-48 z-30 hover:border-[#00CFFF]/50 transition-colors">
             <div className="flex items-center gap-3 mb-2">
               <div className="bg-[#00CFFF]/20 p-1.5 rounded-lg">
@@ -211,13 +211,13 @@ export default function TecnologiasPage() {
             <p className="text-xs text-gray-400">Enlace neuronal de ecosistemas.</p>
           </div>
 
-          {/* Anillos Orbitales Decorativos */}
+          {/* Decorativos */}
           <div className="absolute w-[400px] h-[400px] border border-[#00CFFF]/10 rounded-full z-0 pointer-events-none"></div>
           <div className="absolute w-[600px] h-[600px] border border-[#00CFFF]/5 rounded-full z-0 pointer-events-none"></div>
 
         </div>
 
-        {/* Stats Grid Compacto */}
+        {/* Stats Grid */}
         <div className="stats-container grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl px-4 mt-6">
           {[
             { label: "Latencia", value: "< 10ms", status: "RÁPIDO" },
@@ -237,7 +237,7 @@ export default function TecnologiasPage() {
         </div>
       </main>
 
-      {/* Footer Minimalista */}
+      {/* Footer */}
       <footer className="w-full border-t border-white/10 bg-black/80 backdrop-blur-md relative z-50 py-3 px-6 flex justify-between items-center text-[10px] text-gray-500">
         <div>© {new Date().getFullYear()} NEWTEX</div>
         <div className="flex gap-4">

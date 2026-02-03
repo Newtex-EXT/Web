@@ -22,7 +22,7 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         const renderer = new THREE.WebGLRenderer({
             canvas: canvasRef.current,
             alpha: true,
-            antialias: true, // Keep high quality 
+            antialias: true,
             powerPreference: "high-performance"
         });
 
@@ -34,8 +34,6 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         const clock = new THREE.Clock();
         const electricBlue = 0x00CFFF;
 
-        // --- NEBULA ---
-        // Optimization: Reduced segments from 64 to 48
         const nebulaGeometry = new THREE.SphereGeometry(50, 48, 48);
         const nebulaMaterial = new THREE.ShaderMaterial({
             uniforms: { uTime: { value: 0.0 }, uOpacity: { value: 1.0 } },
@@ -45,11 +43,8 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         });
         const nebulaSphere = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
         scene.add(nebulaSphere);
-
-        // --- PLANET ---
         const planetGroup = new THREE.Group();
         scene.add(planetGroup);
-        // Optimization: Reduced segments
         const planetGeometry = new THREE.SphereGeometry(2, 48, 48);
 
         const rimUniforms = {
@@ -87,7 +82,6 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         planetGroup.add(planet);
         planetGroup.position.set(-0.1, 0.1, 0);
 
-        // --- GLOW ---
         const createGlowTexture = () => {
             const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 256;
             const context = canvas.getContext('2d');
@@ -119,7 +113,6 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         }
         addDistantGlow();
 
-        // --- CONSTELLATION ---
         function createConstellation() {
             const constellationGroup = new THREE.Group();
             const starColor = 0x00CFFF;
@@ -155,7 +148,6 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         const constellation = createConstellation();
         scene.add(constellation);
 
-        // --- GLOBE ---
         function createGlobe() {
             const globeVertexShader = `uniform float uRadius; uniform vec3 lightPosition; varying float vIntensity; varying float vAlpha; void main() { vec3 vertexNormal = normalize(position); vec3 lightDirection = normalize(lightPosition - position); vIntensity = max(dot(vertexNormal, lightDirection), 0.2); vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0); vAlpha = smoothstep(-uRadius, uRadius * 0.8, modelViewPosition.z); gl_Position = projectionMatrix * modelViewPosition; gl_PointSize = 1.8; }`;
             const globeFragmentShader = `varying float vIntensity; varying float vAlpha; void main() { vec3 baseColor = vec3(0.0, 0.81, 1.0); vec3 finalColor = baseColor * vIntensity; gl_FragColor = vec4(finalColor, vAlpha * vIntensity); }`;
@@ -175,7 +167,6 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         globePoints.visible = false;
         scene.add(globePoints);
 
-        // --- GRID ---
         const gridGeometry = new THREE.PlaneGeometry(12, 12, 80, 80);
         const gridMaterial = new THREE.ShaderMaterial({
             uniforms: { uTime: { value: 0.0 }, uOpacity: { value: 0.0 } },
@@ -186,10 +177,8 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         const connectionsGrid = new THREE.Points(gridGeometry, gridMaterial);
         connectionsGrid.rotation.x = -Math.PI / 2.5; connectionsGrid.scale.set(0, 0, 0); connectionsGrid.visible = false; scene.add(connectionsGrid);
 
-        // --- STARS ---
         function addStars() {
             const starVertices = [];
-            // Removed unnecessary complex logic, just simple scatter
             const count = isContactPage ? 200 : 500;
             for (let i = 0; i < count; i++) {
                 const dist = 30 + Math.random() * 60;
@@ -206,7 +195,6 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         }
         const stars = addStars();
 
-        // --- DUST ---
         let dust;
         function addCosmicDust() {
             const dustGeometry = new THREE.BufferGeometry();
@@ -222,15 +210,12 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         }
         addCosmicDust();
 
-        // --- COMPOSER ---
         const composer = new EffectComposer(renderer);
         composer.addPass(new RenderPass(scene, camera));
-        // Optimization: Bloom resolution could be halved? No, stick to window size but limit parameters
         const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.4, 0.8);
         bloomPass.threshold = 0.8; bloomPass.strength = 1.2; bloomPass.radius = 0.4;
         composer.addPass(bloomPass);
 
-        // --- ANIMATION LOOP ---
         const animate = () => {
             const elapsedTime = clock.getElapsedTime();
             nebulaMaterial.uniforms.uTime.value = elapsedTime;
@@ -252,14 +237,13 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         };
         const animationId = requestAnimationFrame(animate);
 
-        // --- EXPOSE CONTEXT ---
         if (onContextCreated) {
             onContextCreated({
                 scene, overlayScene, camera, renderer, composer, clock,
                 nebulaMaterial, planetGroup, distantGlow,
                 globePoints, constellation, connectionsGrid,
                 gridMaterial, rimUniforms,
-                initialGlowPosition, // Exposed for GSAP
+                initialGlowPosition,
                 setGlowInTransit: (val) => { isGlowInTransit = val; }
             });
         }
@@ -277,11 +261,9 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
             cancelAnimationFrame(animationId);
             window.removeEventListener('resize', handleResize);
 
-            // DISPOSAL
             renderer.dispose();
             composer.dispose();
 
-            // Traverse and dispose
             [scene, overlayScene].forEach(s => {
                 s.traverse((object) => {
                     if (!object.isMesh && !object.isPoints && !object.isLine && !object.isSprite) return;
