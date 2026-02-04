@@ -24,14 +24,40 @@
   }
 }
 
-html {
-  scroll-behavior: smooth;
+/* RESET ESTRUCTURAL Y PREVENCIÓN DE OVERFLOW */
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  /* Mantenemos esto para evitar barras horizontales */
+  margin: 0;
+  padding: 0;
+  /* La línea 'scroll-behavior' ha sido eliminada para devolver el control a Lenis. */
 }
-
 
 body {
   color: var(--foreground);
   font-family: "Montserrat";
+}
+
+/* SISTEMA DE ESCALA AGRESIVO (80%) PARA ESCRITORIO */
+html {
+  font-size: 16px;
+  /* Base para móvil se mantiene estándar */
+}
+
+@media (min-width: 1024px) {
+  html {
+    /* 12.8px es el 80% de 16px. Esto reducirá visiblemente el tamaño de toda la UI. */
+    font-size: 12.8px;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    /* En pantallas muy grandes (Full HD+), subimos a 90% para mejorar legibilidad. */
+    font-size: 14.4px;
+  }
 }
 
 

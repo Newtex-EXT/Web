@@ -126,7 +126,7 @@ const Informacion = () => {
                 <div className="hidden md:flex flex-row items-center justify-center space-x-4">
                     <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Inicio</Link>
                     <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Features</Link>
-                    <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Tecnologias</Link>
+                    <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Conócenos</Link>
                     <Link href="/#proceso" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Proceso</Link>
                     <Link href="/Contacto" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Contacto</Link>
                     <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">
@@ -150,7 +150,7 @@ const Informacion = () => {
                         <div className="relative z-10 w-full px-8 pb-16 md:px-16">
                             <div className="max-w-4xl">
 
-                                <h1 className="animate-fade-up text-6xl font-black tracking-tighter text-white sm:text-7xl md:text-8xl lg:text-9xl mb-10 font-['Trebuchet_MS'] leading-[0.9]">
+                                <h1 className="animate-fade-up text-5xl font-black tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-8xl mb-8 font-['Trebuchet_MS'] leading-tight">
                                     ¿Quienes <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">somos?</span>
                                 </h1>
@@ -166,7 +166,7 @@ const Informacion = () => {
                     <div className="grid auto-rows-[minmax(180px,auto)] grid-cols-1 md:grid-cols-4 gap-6">
 
                         {/* 1. Header */}
-                        <div id="catalogo-de-servicios" className="col-span-1 md:col-span-4 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10 animate-fade-up">
+                        <div id="catalogo-de-servicios" className="scroll-mt-32 col-span-1 md:col-span-4 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10 animate-fade-up">
                             <div>
                                 <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Catálogo de servicios</h2>
                                 <p className="mt-3 text-lg text-slate-400">Servicios base, soluciones 100% personalizadas.</p>
@@ -232,7 +232,7 @@ const Informacion = () => {
                         </div>
 
                         {/* 4. SEPARADOR */}
-                        <div id="areas-de-impacto" className="col-span-1 md:col-span-2 flex items-end mt-24">
+                        <div id="areas-de-impacto" className="scroll-mt-32 col-span-1 md:col-span-2 flex items-end mt-24">
                             <h2 className="text-3xl font-bold tracking-tight text-white">Áreas de impacto</h2>
                         </div>
                         <div className="hidden md:block col-span-1 md:col-span-2 border-b border-white/10 mb-2 mt-24"></div>

@@ -30,7 +30,7 @@ export default function Contact() {
         <div className="hidden md:flex flex-row items-center justify-center space-x-4">
           <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</Link>
           <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF]">Features</Link>
-          <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF]">Tecnología</Link>
+          <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF]">Conócenos</Link>
           <Link href="/#proceso" className="py-2 px-3 block hover:text-[#00CFFF]">Proceso</Link>
           <Link href="/Contacto" className="py-2 px-3 block hover:text-[#00CFFF]">Contacto</Link>
           <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">

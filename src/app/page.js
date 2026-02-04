@@ -60,9 +60,9 @@ export default function Home() {
       const trigger = ScrollTrigger.getById(triggerId);
       if (trigger) {
         gsap.to(window, {
-          duration: 1.5,
+          duration: 2,
           scrollTo: { y: trigger.start, offsetY: 0 },
-          ease: "power3.inOut"
+          ease: "power4.inOut"
         });
         return;
       }
@@ -71,9 +71,9 @@ export default function Home() {
     const element = document.querySelector(id);
     if (element) {
       gsap.to(window, {
-        duration: 1.5,
+        duration: 2,
         scrollTo: { y: element, offsetY: 0 },
-        ease: "power3.inOut"
+        ease: "power4.inOut"
       });
     }
   };
@@ -279,14 +279,14 @@ export default function Home() {
     <div ref={mainRef}>
       <ThreeCanvas onContextCreated={setThreeCtx} isContactPage={isContactPage} />
 
-      <main className="flex min-h-screen flex-col text-white">
+      <main className="flex min-h-screen w-full flex-col overflow-x-hidden text-white">
 
         <header className="fixed top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 bg-black/50 backdrop-blur-sm">
           <Logo className="w-auto h-12 text-blue-900 mt-2" />
           <div className="md:flex md:flex-row flex-col items-center justify-center md:space-x-4">
             <button onClick={() => handleScrollTo("#inicio")} className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</button>
             <button onClick={() => handleScrollTo("#features")} className="py-2 px-3 block hover:text-[#00CFFF]">Features</button>
-            <button onClick={() => handleScrollTo("#tecnologias")} className="py-2 px-3 block hover:text-[#00CFFF]">Tecnología</button>
+            <button onClick={() => handleScrollTo("#tecnologias")} className="py-2 px-3 block hover:text-[#00CFFF]">Conócenos</button>
             <button onClick={() => handleScrollTo("#proceso")} className="py-2 px-3 block hover:text-[#00CFFF]">Proceso</button>
             <button onClick={() => handleScrollTo("#contacto")} className="py-2 px-3 block hover:text-[#00CFFF]">Contacto</button>
             <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">
@@ -297,7 +297,7 @@ export default function Home() {
 
         <section id="inicio" className="hero-section min-h-screen relative w-full overflow-hidden">
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
-            <h1 className="text-6xl font-extrabold hero-title will-change-transform" style={{ fontFamily: "'Trebuchet MS', sans-serif", backfaceVisibility: 'hidden' }}>NEWTEX</h1>
+            <h1 className="text-5xl md:text-7xl font-extrabold hero-title will-change-transform" style={{ fontFamily: "'Trebuchet MS', sans-serif", backfaceVisibility: 'hidden' }}>NEWTEX</h1>
             <p className="mt-4 text-lg text-gray-200 hero-subtitle will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Automatización a Medida</p>
           </div>
         </section>
@@ -305,7 +305,7 @@ export default function Home() {
         <section id="features" className="features-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4 grid md:grid-cols-2 items-center gap-12">
             <div className="max-w-md">
-              <h2 className="text-4xl font-bold fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Rápido. Fiable. Seguro.</h2>
+              <h2 className="text-3xl lg:text-5xl font-bold fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Rápido. Fiable. Seguro.</h2>
               <p className="mt-4 text-lg text-gray-300 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Soluciones diseñadas para optimizar tus procesos sin comprometer la seguridad ni la calidad.</p>
               <div className="mt-8 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <button onClick={() => handleScrollTo("#proceso")} className="rounded px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-[#00CFFF] hover:text-black">
@@ -313,7 +313,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <div className="phone-image opacity-0 will-change-transform flex justify-center scale-[0.85] origin-center translate-y-[-20px]" style={{ backfaceVisibility: 'hidden' }}>
+            <div className="phone-image opacity-0 will-change-transform flex justify-center scale-[0.70] lg:scale-[0.80] origin-center translate-y-[-20px]" style={{ backfaceVisibility: 'hidden' }}>
               <PhoneMockup />
             </div>
           </div>
@@ -321,7 +321,7 @@ export default function Home() {
 
         <section id="tecnologias" className="tech-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4">
-            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Tecnologías Clave</h2>
+            <h2 className="text-center text-3xl md:text-5xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Conócenos</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <Link href="/informacion" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
                 <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">corporate_fare</span>
@@ -341,7 +341,7 @@ export default function Home() {
 
         <section id="proceso" className="process-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4">
-            <h2 className="text-center text-4xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Nuestro Proceso</h2>
+            <h2 className="text-center text-3xl md:text-5xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Nuestro Proceso</h2>
             <div className="grid md:grid-cols-3 gap-12">
               <div className="text-center fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <p className="text-6xl font-bold text-[#00CFFF]">01</p>
