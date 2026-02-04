@@ -164,7 +164,7 @@ export default function Home() {
         .to(".phone-image", { opacity: 1, x: 0, duration: 3, ease: "power2.out", force3D: true }, "-=2")
         .fromTo(planetGroup.rotation, { y: -Math.PI / 4, z: -Math.PI / 3 }, { y: Math.PI / 4, z: Math.PI / 3, duration: 3, ease: "power3.inOut" }, "-=2")
 
-        .to({}, { duration: 25 })
+        .to({}, { duration: 35 })
 
         // 2. Features Out / Tecnologias In 
         .to(".features-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
@@ -305,7 +305,7 @@ export default function Home() {
         <section id="features" className="features-section min-h-screen flex items-center overflow-hidden">
           <div className="mx-auto max-w-6xl w-full px-4 grid md:grid-cols-2 items-center gap-12">
             <div className="max-w-md">
-              <h2 className="text-3xl lg:text-5xl font-bold fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Rápido. Fiable. Seguro.</h2>
+              <h2 className="text-3xl lg:text-5xl font-bold fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Rápido, Fiable, Seguro.</h2>
               <p className="mt-4 text-lg text-gray-300 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Soluciones diseñadas para optimizar tus procesos sin comprometer la seguridad ni la calidad.</p>
               <div className="mt-8 fade-in will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
                 <button onClick={() => handleScrollTo("#proceso")} className="rounded px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-[#00CFFF] hover:text-black">
@@ -313,7 +313,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <div className="phone-image opacity-0 will-change-transform flex justify-center scale-[0.70] lg:scale-[0.80] origin-center translate-y-[-20px]" style={{ backfaceVisibility: 'hidden' }}>
+            <div className="phone-image opacity-0 will-change-transform flex justify-center scale-[0.70] lg:scale-[0.65] origin-center translate-y-[-20px]" style={{ backfaceVisibility: 'hidden' }}>
               <PhoneMockup />
             </div>
           </div>
@@ -324,15 +324,15 @@ export default function Home() {
             <h2 className="text-center text-3xl md:text-5xl font-bold fade-in mb-16 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Conócenos</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <Link href="/informacion" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">corporate_fare</span>
+                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">info</span>
                 <h3 className="text-2xl font-semibold mt-4">Quienes somos</h3>
               </Link>
               <Link href="/informacion#catalogo-de-servicios" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">design_services</span>
+                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">list_alt</span>
                 <h3 className="text-2xl font-semibold mt-4">Catálogo de servicios</h3>
               </Link>
               <Link href="/informacion#areas-de-impacto" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
-                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">trending_up</span>
+                <span className="material-symbols-outlined text-7xl mx-auto mb-4 text-[#00CFFF]">leaderboard</span>
                 <h3 className="text-2xl font-semibold mt-4">Áreas de impacto</h3>
               </Link>
             </div>

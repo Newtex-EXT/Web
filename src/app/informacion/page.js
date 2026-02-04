@@ -137,8 +137,8 @@ const Informacion = () => {
 
             <main className="relative z-10 flex-1 pt-24">
                 {/* Hero */}
-                <section className="relative mx-auto w-full max-w-7xl px-6 lg:px-8 pt-12 pb-24">
-                    <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-white/10 shadow-2xl shadow-primary/10 group h-[650px] flex items-end">
+                <section className="relative mx-auto w-full max-w-7xl px-6 lg:px-3 pt-12 pb-24">
+                    <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-white/10 shadow-2xl shadow-primary/10 group h-[550px] flex items-end">
                         <div
                             ref={heroBgRef}
                             className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay scale-110"
