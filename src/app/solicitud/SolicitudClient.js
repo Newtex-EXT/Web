@@ -276,7 +276,6 @@ const SolicitudClient = () => {
                                 </div>
                                 {status.type === 'success' && (
                                     <div className="flex items-center justify-center gap-2 text-green-400 font-bold animate-pulse" role="alert">
-                                        <CheckCircle size={18} />
                                         <p>{status.message}</p>
                                     </div>
                                 )}
