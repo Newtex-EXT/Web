@@ -86,7 +86,7 @@ const SolicitudClient = () => {
                 service: DOMPurify.sanitize(formData.service)
             };
 
-            const { error } = await supabase
+            const { error: dbError } = await supabase
                 .from('CLIENTES_DEMO')
                 .insert([
                     {
@@ -98,14 +98,29 @@ const SolicitudClient = () => {
                     }
                 ]);
 
-            if (error) throw error;
+            if (dbError) throw dbError;
+
+            await fetch('/api/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                nombre: sanitizedData.name,
+                nombre_empresa: formData.company,
+                correo_electronico: sanitizedData.email,
+                telefono: formData.phone,
+                servicio: formData.service,
+                tipoFormulario: 'Solicitud Demo'
+            }),
+            });
 
             setStatus({ loading: false, type: 'success', message: '¡Demo agendada con éxito!' });
             setFormData({ name: '', email: '', company: '', phone: '', service: '' });
 
-        } catch (error) {
+        } catch (dbError) {
 
-            console.error("Error al enviar formulario:", error);
+            console.error("Error al enviar formulario:", dbError);
             setStatus({
                 loading: false,
                 type: 'error',
