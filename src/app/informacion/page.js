@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Informacion = () => {
     const mainRef = useRef(null);
     const heroBgRef = useRef(null);
+    const canvasRef = useRef(null);
 
     useEffect(() => {
         const lenis = new Lenis({
@@ -110,27 +111,33 @@ const Informacion = () => {
     }, []);
 
     return (
-        <div ref={mainRef} className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-black text-white font-sans selection:bg-primary/30">
-            {/* Background */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-900/20 rounded-full blur-[120px]"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[100px]"></div>
+        <div className="relative min-h-screen w-full flex flex-col bg-black text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+                <div className="fixed inset-0 pointer-events-none z-0">
+                <div className="absolute top-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-blue-900/10 rounded-full blur-[150px]"></div>
+                <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-primary/5 rounded-full blur-[120px]"></div>
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
             </div>
+            <div ref={mainRef} className="min-h-screen w-full overflow-x-hidden bg-black text-white selection:bg-[#00CFFF] selection:text-black font-sans flex flex-col relative">
+            <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 h-full w-full pointer-events-none" />
 
-            {/* Navigation */}
-            <header className="fixed top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 bg-black/50 backdrop-blur-sm border-b border-white/5">
+            <header className="fixed top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 bg-black/50 backdrop-blur-sm">
                 <Link href="/">
-                    <Logo className="w-auto h-12 text-blue-900 mt-2" />
+                    <Logo className="w-auto h-8 md:h-12 text-[#00CFFF] mt-2" />
                 </Link>
                 <div className="hidden md:flex flex-row items-center justify-center space-x-4">
-                    <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Inicio</Link>
-                    <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Features</Link>
-                    <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Conócenos</Link>
-                    <Link href="/#proceso" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Proceso</Link>
-                    <Link href="/Contacto" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors text-sm font-medium">Contacto</Link>
+                    <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors">Inicio</Link>
+                    <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors">Features</Link>
+                    <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF]">Conócenos</Link>
+                    <Link href="/#process" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors">Proceso</Link>
+                    <Link href="/Contacto" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors">Contacto</Link>
                     <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">
                         Solicitar Demo
+                    </Link>
+                </div>
+                {/* Mobile Button - ONLY Solicitar Demo */}
+                <div className="md:hidden z-50 relative">
+                     <Link href="/solicitud" className="flex h-9 px-4 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-xs font-bold shadow-[0_0_10px_rgba(0,208,255,0.3)] transition-all">
+                      Solicitar Demo
                     </Link>
                 </div>
             </header>
@@ -147,14 +154,14 @@ const Informacion = () => {
                             style={{ backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCnrH62nMNc_wHmr4h1iduQ8OvLer52hXt2BvsXaKzc7tiVrGeInOfWByXW7xLU-HS5KU0YwbK7gnBLUy0_mfXMM35qFRvDxnaPdoNp8uX2a0mEgKOzqbfA45ghAUGJRuhCD0bmV1zTzcfC-nqOLNSVPc9BUc_gXbryX6lqmIviI1K3C0grGmcoMxtUQ4reobim_hB64zgtuTFsHmuKDYracft5l2YHyvJmYxKGlxMNAjyf8MEJNhQ7tTygnwpQHVDDqsypMV02Lf0")` }}
                         ></div>
                         <div className="absolute inset-0 bg-gradient-to-t from-[#101022] via-[#101022]/40 to-transparent"></div>
-                        <div className="relative z-10 w-full px-8 pb-16 md:px-16">
+                        <div className="relative z-10 w-full px-8 pb-8 md:pb-16 md:px-16">
                             <div className="max-w-4xl">
 
-                                <h1 className="animate-fade-up text-5xl font-black tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-8xl mb-8 font-['Trebuchet_MS'] leading-tight">
+                                <h1 className="animate-fade-up mt-24 md:mt-0 text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 font-['Trebuchet_MS'] leading-tight">
                                     ¿Quienes <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">somos?</span>
                                 </h1>
-                                <p className="animate-fade-up max-w-2xl text-xl text-slate-200 leading-relaxed font-light border-l-2 border-primary pl-8 ml-2">
+                                <p className="animate-fade-up max-w-2xl text-sm sm:text-xl text-slate-200 leading-relaxed font-light border-l-2 border-primary pl-4 md:pl-8 ml-2">
                                     En NEWTEX, somos un equipo multidisciplinar de jóvenes profesionales apasionados por la tecnología y la eficiencia operativa. NEWTEX nace de la convicción de que la digitalización no debe ser un lujo, sino una inversión con beneficios medibles ; por ello, nuestra misión es actuar como el puente tecnológico que las PYMES necesitan para liderar la era digital. No solo desarrollamos software, sino que acompañamos a nuestros clientes en su transición hacia la Industria 4.0 con soluciones robustas, escalables y diseñadas para durar.
                                 </p>
                             </div>
@@ -162,14 +169,14 @@ const Informacion = () => {
                     </div>
                 </section>
 
-                <section className="mx-auto w-full max-w-7xl px-6 lg:px-8 pb-32">
+                <section className="mx-auto w-full max-w-7xl px-6 lg:px-8 pb-16 md:pb-32">
                     <div className="grid auto-rows-[minmax(180px,auto)] grid-cols-1 md:grid-cols-4 gap-6">
 
                         {/* 1. Header */}
                         <div id="catalogo-de-servicios" className="scroll-mt-32 col-span-1 md:col-span-4 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/10 animate-fade-up">
                             <div>
-                                <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Catálogo de servicios</h2>
-                                <p className="mt-3 text-lg text-slate-400">Servicios base, soluciones 100% personalizadas.</p>
+                                <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">Catálogo de servicios</h2>
+                                <p className="mt-3 text-sm md:text-lg text-slate-400">Servicios base, soluciones 100% personalizadas.</p>
                             </div>
                             <Link className="group flex items-center gap-2 text-base font-bold text-primary hover:text-white transition-colors" href="/tecnologias">
 
@@ -182,8 +189,8 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50"></div>
                             <div className="relative z-10 max-w-3xl">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">Consultoría de Procesos</h3>
-                                <p className="text-lg text-slate-300">
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Consultoría de Procesos</h3>
+                                <p className="text-sm md:text-lg text-slate-300">
                                     Nuestra plataforma elimina los silos de datos conectando tu ERP, CRM y sistemas legacy en una única fuente de verdad en tiempo real. Diseñada para soportar cargas de trabajo críticas sin latencia.
                                 </p>
                             </div>
@@ -196,8 +203,8 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                             <div className="relative z-10">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">Asistente virtual 24/7</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed">Respuesta inmediata, un chatbot inteligente que captura clientes, resuelve dudas y agenda reuniones mientras tú te enfocas en lo importante.</p>
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Asistente virtual 24/7</h3>
+                                <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Respuesta inmediata, un chatbot inteligente que captura clientes, resuelve dudas y agenda reuniones mientras tú te enfocas en lo importante.</p>
                             </div>
                         </div>
 
@@ -206,8 +213,8 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                             <div className="relative z-10">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">CRM inteligente</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed">Vende más a quienes ya te conocen, centraliza tus contactos y automatiza el seguimiento de clientes para que nunca se te escape una oportunidad.</p>
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">CRM inteligente</h3>
+                                <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Vende más a quienes ya te conocen, centraliza tus contactos y automatiza el seguimiento de clientes para que nunca se te escape una oportunidad.</p>
                             </div>
                         </div>
 
@@ -216,8 +223,8 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                             <div className="relative z-10">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">Centro de Control de Pedidos</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed">Adiós al caos administrativo. Unificamos todos tus canales de venta en un solo panel para eliminar errores manuales y agilizar toda tu logística.</p>
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Centro de Control de Pedidos</h3>
+                                <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Adiós al caos administrativo. Unificamos todos tus canales de venta en un solo panel para eliminar errores manuales y agilizar toda tu logística.</p>
                             </div>
                         </div>
 
@@ -226,14 +233,14 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                             <div className="relative z-10">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">Documentación Automática</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed">De horas de papeleo a un solo clic, genera facturas, presupuestos y contratos personalizados en PDF de forma instantánea y sin errores humanos.</p>
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Documentación Automática</h3>
+                                <p className="text-sm md:text-lg text-slate-300 leading-relaxed">De horas de papeleo a un solo clic, genera facturas, presupuestos y contratos personalizados en PDF de forma instantánea y sin errores humanos.</p>
                             </div>
                         </div>
 
                         {/* 4. SEPARADOR */}
                         <div id="areas-de-impacto" className="scroll-mt-32 col-span-1 md:col-span-2 flex items-end mt-24">
-                            <h2 className="text-3xl font-bold tracking-tight text-white">Áreas de impacto</h2>
+                            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">Áreas de impacto</h2>
                         </div>
                         <div className="hidden md:block col-span-1 md:col-span-2 border-b border-white/10 mb-2 mt-24"></div>
 
@@ -242,8 +249,8 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                             <div className="relative z-10">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">Gestión Administrativa</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed">Digitalizamos el motor de tu empresa eliminando tareas manuales y papeleo. Automatizamos la creación de facturas, presupuestos y contratos en segundos, centralizando toda tu información para evitar errores humanos.</p>
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Gestión Administrativa</h3>
+                                <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Digitalizamos el motor de tu empresa eliminando tareas manuales y papeleo. Automatizamos la creación de facturas, presupuestos y contratos en segundos, centralizando toda tu información para evitar errores humanos.</p>
                             </div>
                         </div>
 
@@ -252,8 +259,8 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                             <div className="relative z-10">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">Operaciones y Logística</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed">Unificamos tus canales de venta en un solo panel de control digital. Mediante conectores inteligentes, registramos cada pedido en tiempo real, erradicando el caos administrativo y garantizando la trazabilidad total de tu stock.</p>
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Operaciones y Logística</h3>
+                                <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Unificamos tus canales de venta en un solo panel de control digital. Mediante conectores inteligentes, registramos cada pedido en tiempo real, erradicando el caos administrativo y garantizando la trazabilidad total de tu stock.</p>
                             </div>
                         </div>
 
@@ -262,8 +269,8 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                             <div className="relative z-10">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">Atención al Cliente</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed">Implementamos asistentes inteligentes que capturan contactos y agendan reuniones 24/7 de forma autónoma. Automatizamos el seguimiento estratégico de clientes para aumentar tus ventas sin que tengas que intervenir.</p>
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Atención al Cliente</h3>
+                                <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Implementamos asistentes inteligentes que capturan contactos y agendan reuniones 24/7 de forma autónoma. Automatizamos el seguimiento estratégico de clientes para aumentar tus ventas sin que tengas que intervenir.</p>
                             </div>
                         </div>
 
@@ -272,8 +279,8 @@ const Informacion = () => {
                             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                             <div className="relative z-10">
 
-                                <h3 className="text-3xl font-bold text-white mb-4">Estrategia y Toma de Decisiones.</h3>
-                                <p className="text-lg text-slate-300 leading-relaxed">Detectamos ineficiencias y cuellos de botella mediante auditorías técnicas exhaustivas. Diseñamos soluciones a medida que garantizan un retorno de inversión rápido, permitiéndote gestionar tu negocio basándote en datos reales.</p>
+                                <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Estrategia y Toma de Decisiones.</h3>
+                                <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Detectamos ineficiencias y cuellos de botella mediante auditorías técnicas exhaustivas. Diseñamos soluciones a medida que garantizan un retorno de inversión rápido, permitiéndote gestionar tu negocio basándote en datos reales.</p>
                             </div>
                         </div>
 
@@ -342,6 +349,7 @@ const Informacion = () => {
                     </div>
                 </div>
             </footer>
+            </div>
         </div>
     );
 };

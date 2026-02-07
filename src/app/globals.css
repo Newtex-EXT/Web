@@ -17,10 +17,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+/* Estilo para Escritorio (más de 1024px) */
+@media (min-width: 1024px) {
+  .contenedor {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
