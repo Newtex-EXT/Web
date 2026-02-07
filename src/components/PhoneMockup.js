@@ -48,7 +48,7 @@ export default function PhoneMockup() {
     const chartData = [50, 75, 60, 90, 80];
 
     return (
-        <div className="relative w-[280px] h-[580px] bg-[#0a1518] rounded-[3rem] border-[8px] border-[#454545] shadow-2xl overflow-hidden group">
+        <div className="relative w-[250px] h-[530px] bg-[#0a1518] rounded-[3rem] border-[6px] border-[#454545] shadow-2xl overflow-hidden group">
             {/* Screen Content */}
             <div className="absolute inset-0 bg-background-dark p-6 flex flex-col gap-6">
                 <div className="flex items-center justify-between text-white/40">

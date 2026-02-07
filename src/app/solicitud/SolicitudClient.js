@@ -26,7 +26,6 @@ const SolicitudPage = () => {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
-        // Basic client-side validation
         if (!data.name || !data.email || !data.service) {
             setStatus({ loading: false, type: 'error', message: 'Nombre, email y servicio son obligatorios.' });
             return;

@@ -102,12 +102,7 @@ export default function Home() {
         setGlowInTransit, initialGlowPosition
       } = threeCtx;
 
-      if (window.scrollY > 0) {
-        gsap.set(".hero-title, .hero-subtitle", { opacity: 0, visibility: "hidden", overwrite: "auto" });
-      } else {
-        gsap.set(".hero-title, .hero-subtitle", { opacity: 1, visibility: "visible", y: 0 });
-      }
-      ScrollTrigger.refresh();
+
 
       const handleResize = () => {
       };
@@ -115,25 +110,24 @@ export default function Home() {
 
       const pinConfig = { start: "top top", scrub: 1, pin: true, anticipatePin: 1 };
 
-      gsap.timeline({ scrollTrigger: { trigger: ".hero-section", end: "+=600%", ...pinConfig, id: "inicio" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".features-section", end: "+=1200%", ...pinConfig, id: "features" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".tech-section", end: "+=1200%", ...pinConfig, id: "tecnologias" } });
-      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=1700%", ...pinConfig, id: "proceso" } });
-      // Sectors section removed
-      gsap.timeline({ scrollTrigger: { trigger: ".cta-section", end: "+=100%", ...pinConfig, id: "contacto" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".hero-section", end: "+=400%", ...pinConfig, id: "inicio" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".features-section", end: "+=600%", ...pinConfig, id: "features" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".tech-section", end: "+=600%", ...pinConfig, id: "tecnologias" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".process-section", end: "+=800%", ...pinConfig, id: "proceso" } });
+      gsap.timeline({ scrollTrigger: { trigger: ".cta-section", end: "+=150%", ...pinConfig, id: "contacto" } });
 
       const introTl = gsap.timeline();
       gsap.set(".hero-title, .hero-subtitle, .fade-in, .tech-card", {
-        rotation: 0.01, z: 0.1, force3D: true
+        clearProps: "all", rotation: 0.01, z: 0.1, force3D: true
       });
       introTl
         .fromTo(".hero-section .hero-title",
-          { opacity: 0, scale: 0.8, y: 50 },
-          { opacity: 1, scale: 1, y: 0, duration: 1.5, ease: "power3.out", force3D: true }
+          { opacity: 0, scale: 0.8, y: 50, visibility: "hidden" },
+          { opacity: 1, scale: 1, y: 0, duration: 1.5, ease: "power3.out", force3D: true, visibility: "visible" }
         )
         .fromTo(".hero-section .hero-subtitle",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 1, ease: "power2.out", force3D: true },
+          { opacity: 0, y: 20, visibility: "hidden" },
+          { opacity: 1, y: 0, duration: 1, ease: "power2.out", force3D: true, visibility: "visible" },
           "-=1"
         );
 
@@ -148,8 +142,18 @@ export default function Home() {
       });
 
       tl.to({}, { duration: 0.5 })
+
         // 1. Hero Out / Features In
-        .to(".hero-section .text-center > *", { opacity: 0, duration: 2, ease: "power2.in", force3D: true, overwrite: "auto" })
+        .to(".hero-section .text-center > *", {
+          opacity: 0,
+          duration: 4,
+          ease: "power2.inOut",
+          force3D: true,
+          overwrite: "auto",
+          onReverseComplete: () => {
+            gsap.set(".hero-section .text-center > *", { opacity: 1, visibility: "visible", y: 0 });
+          }
+        })
         .to(planetGroup.position, { x: -4, y: 0, duration: 3, ease: "power2.inOut", force3D: true }, "<")
         .to(planetGroup.scale, { x: 0.7, y: 0.7, z: 0.7, duration: 3, ease: "power2.inOut", force3D: true }, "<")
         .to(rimUniforms.uRimColor.value, {
@@ -160,67 +164,107 @@ export default function Home() {
             rimUniforms.uRimColor.value.setRGB(0.85, 0.45, 0.1);
           }
         }, "<")
-        .to(".features-section .fade-in", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "-=2")
-        .to(".phone-image", { opacity: 1, x: 0, duration: 3, ease: "power2.out", force3D: true }, "-=2")
+        .to(".features-section .fade-in", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 4, ease: "power2.inOut", force3D: true }, "-=2")
+        .to(".phone-image", { opacity: 1, x: 0, duration: 4, ease: "power2.inOut", force3D: true }, "-=2")
         .fromTo(planetGroup.rotation, { y: -Math.PI / 4, z: -Math.PI / 3 }, { y: Math.PI / 4, z: Math.PI / 3, duration: 3, ease: "power3.inOut" }, "-=2")
 
         .to({}, { duration: 35 })
 
-        // 2. Features Out / Tecnologias In 
-        .to(".features-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
-        .to(".phone-image", { opacity: 0, x: 100, duration: 2, ease: "power2.in", force3D: true }, "<")
+        // 2. Features Out / Conocenos In
+        .to(".features-section .fade-in", { opacity: 0, stagger: -0.1, duration: 3, ease: "power2.inOut", force3D: true })
+        .to(".phone-image", { opacity: 0, x: 100, duration: 3, ease: "power2.inOut", force3D: true }, "<")
         .to(planetGroup.rotation, { z: 0, y: 0, duration: 0.1 }, "<")
-        .to(planetGroup.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true })
+        .to(planetGroup.scale, { x: 0, y: 0, z: 0, duration: 3, ease: "power2.inOut", force3D: true })
 
-        // Grid tecnologias
+        // Grid Conocenos
         .call(() => { connectionsGrid.visible = true; })
         .fromTo(connectionsGrid.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1, duration: 3, ease: "power2.out", force3D: true }, "<")
         .fromTo(connectionsGrid.position, { z: -20 }, { z: -5, duration: 3, ease: "power2.out", force3D: true }, "<")
         .to(gridMaterial.uniforms.uOpacity, { value: 0.3, duration: 2 }, "<")
 
-        // Tecnologias Content In
-        .to(".tech-section .fade-in", { opacity: 1, duration: 3, rotation: 0.01, force3D: true }, "<")
-        .to(".tech-card", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "<")
+        // Conocenos Content In
+        .to(".tech-section .fade-in", { opacity: 1, duration: 4, ease: "power2.inOut", rotation: 0.01, force3D: true }, "<")
+        .to(".tech-card", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 4, ease: "power2.inOut", force3D: true }, "<")
 
         .to({}, { duration: 25 })
 
-        // 3. Tecnologias Out / Proceso In
-        .to(".tech-section .fade-in", { opacity: 0, duration: 1, force3D: true })
-        .to(".tech-card", { opacity: 0, stagger: -0.05, duration: 1, force3D: true }, "<")
+        // 3. Conocenos Out / Procesos In
+        .to(".tech-section .fade-in", { opacity: 0, duration: 2, ease: "power2.inOut", force3D: true })
+        .to(".tech-card", { opacity: 0, stagger: -0.05, duration: 2, ease: "power2.inOut", force3D: true }, "<")
 
         .to(gridMaterial.uniforms.uOpacity, { value: 0, duration: 1.5 }, "<")
         .to(connectionsGrid.scale, { x: 0, y: 0, z: 0, duration: 1.5, onComplete: () => { connectionsGrid.visible = false; } }, "<")
 
-        // Constelacion
+        // Constelacion N 
         .to(distantGlow.position, { x: 0, y: 0, z: -5, duration: 4, ease: "power2.inOut", onStart: () => { setGlowInTransit(true); } })
         .to(distantGlow.scale, { x: 6, y: 6, z: 6, duration: 4, ease: "power2.inOut" }, "<")
-        .to(distantGlow.material, { opacity: 0.6, duration: 4, ease: "power2.in" }, "<")
+        .to(distantGlow.material, {
+          opacity: 0.6,
+          duration: 4,
+          ease: "power2.in",
+          onReverseComplete: () => {
+            setGlowInTransit(false);
+            gsap.set(distantGlow.position, initialGlowPosition);
+            gsap.set(distantGlow.scale, { x: 1.5, y: 1.5, z: 1.5 });
+            gsap.set(distantGlow.material, { opacity: 0.2 });
+          }
+        }, "<")
 
         // Proceso content
-        .to(".process-section .fade-in", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 3, force3D: true }, "-=2")
+        .to(".process-section .fade-in", { opacity: 1, y: 0, rotation: 0.01, stagger: 0.2, duration: 4, ease: "power2.inOut", force3D: true }, "-=2")
 
         .to({}, { duration: 15 })
 
         // Transicion glow
-        .to(distantGlow.material, { opacity: 0, duration: 2, ease: "power2.out" })
+        .to(distantGlow.material, {
+          opacity: 0,
+          duration: 2,
+          ease: "power2.out",
+          onReverseComplete: () => {
+            setGlowInTransit(true);
+            gsap.set(distantGlow.position, { x: 0, y: 0, z: -5 });
+            gsap.set(distantGlow.scale, { x: 6, y: 6, z: 6 });
+            gsap.set(distantGlow.material, { opacity: 0.6 });
+          }
+        })
         .set(globePoints, { visible: true }, "<")
         .set(constellation, { visible: true }, "<")
-        .fromTo(globePoints.scale, { x: 0, y: 0, z: 0 }, { x: 0.65, y: 0.65, z: 0.65, duration: 1.5, ease: "power3.out", force3D: true }, "<0.2") // Faster, more explosive
-        .fromTo(constellation.scale, { x: 0, y: 0, z: 0 }, { x: 1.8, y: 1.8, z: 1.8, duration: 3, ease: "power3.out", force3D: true }, "<") // Larger scale
+        .fromTo(globePoints.scale, { x: 0, y: 0, z: 0 }, { x: 0.65, y: 0.65, z: 0.65, duration: 1.5, ease: "power3.out", force3D: true }, "<0.2")
+        .fromTo(constellation.scale, { x: 0, y: 0, z: 0 }, { x: 1.8, y: 1.8, z: 1.8, duration: 3, ease: "power3.out", force3D: true }, "<")
         .fromTo(constellation.children[0].material, { opacity: 0 }, { opacity: 0.5, duration: 2, ease: "power2.out" }, "<0.5")
         .fromTo(constellation.children[1].material, { opacity: 0 }, { opacity: 0.3, duration: 2, ease: "power2.out" }, "<0.5")
 
         .to({}, { duration: 15 })
 
         // 4. Proceso Out / Sectores In 
-        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
-        .to(globePoints.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true }, "<")
-        .to(constellation.scale, { x: 0, y: 0, z: 0, duration: 2, ease: "power2.in", force3D: true }, "<")
-        .to(constellation.children[0].material, { opacity: 0, duration: 2 }, "<")
-        .to(constellation.children[1].material, { opacity: 0, duration: 2 }, "<")
+        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 3, ease: "power2.inOut", force3D: true })
+        .to(globePoints.scale, { x: 0, y: 0, z: 0, duration: 3, ease: "power2.inOut", force3D: true }, "<")
+        .to(constellation.scale, {
+          x: 0, y: 0, z: 0, duration: 3, ease: "power2.inOut", force3D: true,
+          onReverseComplete: () => {
+            constellation.visible = true;
+            constellation.children[0].material.opacity = 0.8;
+            constellation.children[1].material.opacity = 0.3;
+          }
+        }, "<")
+        .to(constellation.children[0].material, {
+          opacity: 0, duration: 3,
+          onReverseComplete: () => {
+            constellation.visible = true;
+            constellation.children[0].material.opacity = 0.8;
+            constellation.children[1].material.opacity = 0.3;
+          }
+        }, "<")
+        .to(constellation.children[1].material, {
+          opacity: 0, duration: 3,
+          onReverseComplete: () => {
+            constellation.visible = true;
+            constellation.children[0].material.opacity = 0.8;
+            constellation.children[1].material.opacity = 0.3;
+          }
+        }, "<")
         .call(() => {
           globePoints.visible = false;
-          constellation.visible = false;
           distantGlow.position.set(initialGlowPosition.x, initialGlowPosition.y, initialGlowPosition.z);
           distantGlow.scale.set(1.5, 1.5, 1.5);
           distantGlow.material.opacity = 0.2;
@@ -228,7 +272,7 @@ export default function Home() {
         })
 
         .to({}, { duration: 10 })
-        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 2, force3D: true })
+        .to(".process-section .fade-in", { opacity: 0, stagger: -0.1, duration: 3, ease: "power2.inOut", force3D: true })
 
         .to({}, { duration: 5 });
 
@@ -297,7 +341,7 @@ export default function Home() {
 
         <section id="inicio" className="hero-section min-h-screen relative w-full overflow-hidden">
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
-            <h1 className="text-5xl md:text-7xl font-extrabold hero-title will-change-transform" style={{ fontFamily: "'Trebuchet MS', sans-serif", backfaceVisibility: 'hidden' }}>NEWTEX</h1>
+            <h1 className="text-5xl md:text-5xl font-extrabold hero-title will-change-transform" style={{ fontFamily: "'Trebuchet MS', sans-serif", backfaceVisibility: 'hidden' }}>NEWTEX</h1>
             <p className="mt-4 text-lg text-gray-200 hero-subtitle will-change-transform" style={{ backfaceVisibility: 'hidden' }}>Automatización a Medida</p>
           </div>
         </section>
