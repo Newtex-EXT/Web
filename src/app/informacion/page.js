@@ -191,7 +191,7 @@ const Informacion = () => {
 
                                     <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Consultoría de Procesos</h3>
                                     <p className="text-sm md:text-lg text-slate-300">
-                                        Nuestra plataforma elimina los silos de datos conectando tu ERP, CRM y sistemas legacy en una única fuente de verdad en tiempo real. Diseñada para soportar cargas de trabajo críticas sin latencia.
+                                        Tecnología que se adapta a ti, auditamos tu operativa actual para diseñar un plan de acción que resuelva tus cuellos de botella específicos mediante software construido a medida .
                                     </p>
                                 </div>
                             </div>
