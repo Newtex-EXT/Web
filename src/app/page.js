@@ -21,12 +21,14 @@ const ThreeCanvas = dynamic(() => import('@/components/ThreeCanvas'), {
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const brands = [
-  { name: "Empresa A", color: "#00CFFF" },
-  { name: "Empresa B", color: "#FF0055" },
-  { name: "Empresa C", color: "#00FFaa" },
-  { name: "Empresa D", color: "#FFaa00" },
-  { name: "Empresa E", color: "#aa00FF" },
-  { name: "Empresa F", color: "#00CFFF" },
+  { name: "Hermanos Conde", color: "#00CFFF", logoPath: "/logos/HNCD.png" },
+  // { name: "Empresa B", color: "#FF0055", logoPath: "/logos/empresaB.png" },
+  // { name: "Empresa C", color: "#00FFaa", logoPath: "/logos/empresaC.svg" },
+  // { name: "Empresa D", color: "#FFaa00", logoPath: "/logos/empresaD.png" },
+  // { name: "Empresa E", color: "#aa00FF", logoPath: "/logos/empresaE.svg" },
+  // { name: "Empresa F", color: "#00CFFF", logoPath: "/logos/empresaF.png" },
+  // { name: "NEWTEX", color: "#FF0000", logoPath: "/logos/newtex_logo.svg" },
+  // { name: "Cliente G", color: "#00FF00", logoPath: "/logos/clienteG.png" },
 ];
 
 export default function Home() {
@@ -120,11 +122,11 @@ export default function Home() {
         if (isMobile) {
           gsap.set(planetGroup.position, { x: 0, y: -0.3, z: 0 });
         } else {
-           gsap.set(planetGroup.position, { x: -0.1, y: 0.1, z: 0 });
+          gsap.set(planetGroup.position, { x: -0.1, y: 0.1, z: 0 });
         }
-        
+
         // Shorten pinned sections on mobile to improve flow
-        const pinMultiplier = isMobile ? 0.4 : 1; 
+        const pinMultiplier = isMobile ? 0.4 : 1;
 
         const pinConfig = { start: "top top", scrub: 1, pin: !isMobile, anticipatePin: 1 };
 
@@ -138,7 +140,7 @@ export default function Home() {
         gsap.set(".hero-title, .hero-subtitle, .fade-in, .tech-card", {
           clearProps: "all", rotation: 0.01, z: 0.1, force3D: true
         });
-        
+
         // Initial Intro Animation
         introTl
           .fromTo(".hero-section .hero-title",
@@ -334,13 +336,13 @@ export default function Home() {
             "-=0.5"
           );
 
-        gsap.to(".logo-track", {
-          xPercent: -50,
-          ease: "none",
-          duration: 50,
-          repeat: -1,
-          force3D: true
-        });
+        // gsap.to(".logo-track", {
+        //   xPercent: -50,
+        //   ease: "none",
+        //   duration: 50,
+        //   repeat: -1,
+        //   force3D: true
+        // });
 
       }); // End MatchMedia
 
@@ -357,7 +359,7 @@ export default function Home() {
 
         <header className="fixed top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 bg-black/50 backdrop-blur-sm">
           <Logo className="w-auto h-8 md:h-12 text-blue-900 mt-2 z-50 relative" />
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:flex-row items-center justify-center md:space-x-4">
             <button onClick={() => handleScrollTo("#inicio")} className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</button>
@@ -372,7 +374,7 @@ export default function Home() {
 
           {/* Mobile Button - ONLY Solicitar Demo */}
           <div className="md:hidden z-50 relative">
-             <Link href="/solicitud" className="flex h-9 px-4 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-xs font-bold shadow-[0_0_10px_rgba(0,208,255,0.3)] transition-all">
+            <Link href="/solicitud" className="flex h-9 px-4 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-xs font-bold shadow-[0_0_10px_rgba(0,208,255,0.3)] transition-all">
               Solicitar Demo
             </Link>
           </div>
@@ -456,12 +458,23 @@ export default function Home() {
             <div className="cta-brands-slider w-full mt-16 mb-16 overflow-hidden relative opacity-0 translate-y-8 will-change-transform" style={{ backfaceVisibility: 'hidden' }}>
               <p className="text-sm font-semibold text-[#00CFFF] tracking-widest uppercase mb-6">Confían en nosotros</p>
               <div className="logo-track flex items-center gap-16 w-max">
-                {[...brands, ...brands, ...brands].map((brand, i) => (
+                {/* {[...brands, ...brands, ...brands].map((brand, i) => ( */}
+                {brands.map((brand, i) => (
                   <div key={i} className="flex flex-col items-center justify-center opacity-60 hover:opacity-100 transition-opacity" aria-label={brand.name}>
-                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/10">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke={brand.color} className="w-8 h-8" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.072 0 2.041.518 2.7 1.35l3.712 5.05a4.5 4.5 0 0 1 .9 2.7" />
-                      </svg>
+                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/10 p-2"> {/* Añadido 'p-2' para padding */}
+                      {brand.logoPath ? ( // Verifica si hay una ruta de logo definida
+                        <Image
+                          src={brand.logoPath}
+                          alt={brand.name}
+                          width={48} // Tamaño recomendado para que el logo se vea bien dentro del círculo de 64x64px
+                          height={48} // Tamaño recomendado
+                          className="object-contain" // Asegura que la imagen se escala dentro de las dimensiones sin recortarse
+                        />
+                      ) : ( // Si no hay logoPath, muestra el SVG genérico con el color de la marca
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke={brand.color} className="w-8 h-8" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.072 0 2.041.518 2.7 1.35l3.712 5.05a4.5 4.5 0 0 1 .9 2.7" />
+                        </svg>
+                      )}
                     </div>
                     <span className="mt-2 text-xs font-semibold text-gray-400">{brand.name}</span>
                   </div>
