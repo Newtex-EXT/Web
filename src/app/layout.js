@@ -16,7 +16,6 @@ export default function RootLayout({ children }) {
     <html lang="es">
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-        <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://hrmrzpkcwmfawjrkabsu.supabase.co;" />
       </head>
       <body
         className={`${montserrat.variable} antialiased`}

@@ -6,9 +6,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { tipoFormulario, ...detalles } = body; //Separamos el título del resto de datos
+    const { tipoFormulario, ...detalles } = body;
 
-    //Generamos las filas del correo
     const filasHtml = Object.entries(detalles)
       .map(([campo, valor]) => `<p><strong>${campo.toUpperCase()}:</strong> ${valor}</p>`)
       .join('');
