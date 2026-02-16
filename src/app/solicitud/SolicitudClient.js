@@ -5,10 +5,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import DOMPurify from 'dompurify';
 import { User, Mail, Building, Phone, ChevronDown, ArrowRight, CheckCircle, AlertCircle, MousePointer, Monitor } from 'lucide-react';
-import Logo from "@/components/Logo";
-import Link from "next/link";
+// import { supabase } from '@/utils/supabase';
 
-import { supabase } from '@/utils/supabase';
+const API_BASE_URL = 'http://localhost:3001';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,7 +17,7 @@ const FormIcon = ({ icon: Icon }) => (
     </div>
 );
 
-const SolicitudPage = () => {
+const SolicitudClient = () => {
     const [status, setStatus] = useState({ loading: false, type: '', message: '' });
     const mainRef = useRef(null);
     const canvasRef = useRef(null);
@@ -30,8 +29,16 @@ const SolicitudPage = () => {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
-        if (!data.name || !data.email || !data.service) {
-            setStatus({ loading: false, type: 'error', message: 'Nombre, email y servicio son obligatorios.' });
+        if (!data.name || !data.email || !data.company || !data.service) {
+            setStatus({ loading: false, type: 'error', message: 'Nombre, email, empresa y servicio son obligatorios.' });
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+            setStatus({ loading: false, type: 'error', message: 'Por favor, introduce un email corporativo válido.' });
+            return;
+        }
+        if (data.phone && !/^\+?\d{9,15}$/.test(data.phone)) {
+            setStatus({ loading: false, type: 'error', message: 'Formato de teléfono incorrecto.' });
             return;
         }
 
@@ -40,28 +47,30 @@ const SolicitudPage = () => {
             email: DOMPurify.sanitize(data.email),
             company: DOMPurify.sanitize(data.company),
             phone: DOMPurify.sanitize(data.phone),
-            service: DOMPurify.sanitize(data.service)
+            service: data.service
         };
 
         try {
-            const { error } = await supabase
-                .from('CLIENTES_DEMO')
-                .insert([{
-                    nombre: sanitizedData.name,
-                    nombre_empresa: sanitizedData.company,
-                    correo_electronico: sanitizedData.email,
-                    telefono: sanitizedData.phone,
-                    servicio: sanitizedData.service
-                }]);
 
-            if (error) throw error;
+            const response = await fetch('http://localhost:3001/api/demo/request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sanitizedData),
+            });
 
-            setStatus({ loading: false, type: 'success', message: '¡Solicitud recibida! Revisa tu correo.' });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error en el servidor al procesar la solicitud.');
+            }
+
+            setStatus({ loading: false, type: 'success', message: '¡Solicitud recibida! La revisaremos y te enviaremos el acceso en breve.' });
             e.target.reset();
 
         } catch (error) {
-            console.error("Supabase Submission Error:", error);
-            setStatus({ loading: false, type: 'error', message: 'Error al enviar. Inténtalo de nuevo más tarde.' });
+            console.error("Frontend Submission Error:", error);
+            setStatus({ loading: false, type: 'error', message: error.message || 'Error al enviar. Inténtalo de nuevo más tarde.' });
         }
     };
 
@@ -116,9 +125,9 @@ const SolicitudPage = () => {
                                 <MousePointer size={20} />
                             </div>
                             <div>
-                                <h4 className="text-base font-bold text-white mb-1">1. Selecciona tu solución</h4>
+                                <h4 className="text-base font-bold text-white mb-1">1. Cuéntanos tu necesidad</h4>
                                 <p className="text-slate-400 text-sm leading-relaxed">
-                                    Elige el área a automatizar según tus necesidades.
+                                    Define el área a optimizar en tu empresa.
                                 </p>
                             </div>
                         </div>
@@ -128,9 +137,9 @@ const SolicitudPage = () => {
                                 <Mail size={20} />
                             </div>
                             <div>
-                                <h4 className="text-base font-bold text-white mb-1">2. Revisa tu bandeja</h4>
+                                <h4 className="text-base font-bold text-white mb-1">2. Nuestro equipo evalúa</h4>
                                 <p className="text-slate-400 text-sm leading-relaxed">
-                                    Recibirás un acceso temporal a la demo base.
+                                    Revisaremos tu solicitud y contactaremos contigo.
                                 </p>
                             </div>
                         </div>
@@ -140,9 +149,9 @@ const SolicitudPage = () => {
                                 <Monitor size={20} />
                             </div>
                             <div>
-                                <h4 className="text-base font-bold text-white mb-1">3. Explora la herramienta</h4>
+                                <h4 className="text-base font-bold text-white mb-1">3. Accede a tu demo</h4>
                                 <p className="text-slate-400 text-sm leading-relaxed">
-                                    Comprueba el potencial de la automatización real.
+                                    Te enviaremos un enlace exclusivo para probar la herramienta.
                                 </p>
                             </div>
                         </div>
@@ -195,7 +204,7 @@ const SolicitudPage = () => {
                                     <div className="relative group/input">
                                         <FormIcon icon={Building} />
                                         <input
-                                            type="text" id="company" name="company" placeholder="Empresa S.L."
+                                            type="text" id="company" name="company" placeholder="Empresa S.L." required
                                             className="block w-full bg-black/50 border border-white/10 rounded-lg h-10 pl-10 pr-4 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                             aria-label="Empresa"
                                         />
@@ -224,10 +233,10 @@ const SolicitudPage = () => {
                                         aria-label="Servicio de Interés"
                                     >
                                         <option value="" disabled>Selecciona una opción...</option>
-                                        <option value="Consultoría">Consultoría de Procesos</option>
-                                        <option value="RPA">Automatización y RPA</option>
-                                        <option value="Desarrollo">Desarrollo a Medida</option>
-                                        <option value="Otro">Otro</option>
+                                        <option value="Asistente-Virtual">Asistente Virtual</option>
+                                        <option value="CRM">CRM Inteligente</option>
+                                        <option value="Pedidos">Centro de Control de Pedidos</option>
+                                        <option value="Documentacion">Documentacón Automatica</option>
                                     </select>
                                     <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
                                         <ChevronDown size={16} />
@@ -260,4 +269,4 @@ const SolicitudPage = () => {
     );
 };
 
-export default SolicitudPage;
+export default SolicitudClient;
