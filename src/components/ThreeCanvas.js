@@ -11,20 +11,26 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
     const canvasRef = useRef(null);
 
     useEffect(() => {
-        if (!canvasRef.current) return;
+    if (!canvasRef.current) return;
 
-        logger.info("ThreeCanvas: Initializing scene");
+    logger.info("ThreeCanvas: Initializing scene");
 
-        // SCENE SETUP
-        const scene = new THREE.Scene();
-        const overlayScene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({
-            canvas: canvasRef.current,
-            alpha: true,
-            antialias: true,
-            powerPreference: "high-performance"
-        });
+    // 1. SCENE SETUP
+    const scene = new THREE.Scene();
+    const overlayScene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    
+    const renderer = new THREE.WebGLRenderer({
+        canvas: canvasRef.current,
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance"
+    });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+
 
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setClearColor(0x000000, 0);
@@ -216,6 +222,7 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
         bloomPass.threshold = 0.8; bloomPass.strength = 1.2; bloomPass.radius = 0.4;
         composer.addPass(bloomPass);
 
+        let animationId;
         const animate = () => {
             const elapsedTime = clock.getElapsedTime();
             nebulaMaterial.uniforms.uTime.value = elapsedTime;
@@ -233,9 +240,9 @@ export default function ThreeCanvas({ onContextCreated, isContactPage }) {
             renderer.render(overlayScene, camera);
             renderer.autoClear = true;
 
-            requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(animate);
         };
-        const animationId = requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
 
         if (onContextCreated) {
             onContextCreated({

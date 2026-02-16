@@ -96,9 +96,10 @@ export default function SolicitudContact() {
     <div ref={mainRef} className="min-h-screen w-full bg-[#101022] text-white selection:bg-[#00CFFF] selection:text-black font-sans flex flex-col relative overflow-hidden">
 
       {/* Navbar */}
+      {/* Navbar */}
       <header className="fixed top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 bg-black/50 backdrop-blur-sm">
         <Link href="/">
-          <Logo className="w-auto h-12 text-blue-900 mt-2" />
+          <Logo className="w-auto h-8 md:h-12 text-blue-900 mt-2" />
         </Link>
         <div className="hidden md:flex flex-row items-center justify-center space-x-4">
           <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF]">Inicio</Link>
@@ -110,10 +111,18 @@ export default function SolicitudContact() {
             Solicitar Demo
           </Link>
         </div>
+
+        {/* Mobile Button - ONLY Solicitar Demo */}
+        <div className="md:hidden z-50 relative">
+            <Link href="/solicitud" className="flex h-9 px-4 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-xs font-bold shadow-[0_0_10px_rgba(0,208,255,0.3)] transition-all">
+            Solicitar Demo
+          </Link>
+        </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow flex items-center justify-center pt-24 pb-12 px-4 relative">
+      {/* Main Content */}
+      <main className="flex-grow flex items-center justify-center pt-24 pb-12 px-4 relative overflow-y-auto">
         {/* Subtle */}
         <div className="absolute inset-0 pointer-events-none" style={{
           background: "radial-gradient(circle at 50% 50%, #0a162bff 0%, #04040aff 70%)"

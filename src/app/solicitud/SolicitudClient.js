@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import DOMPurify from 'dompurify';
@@ -19,6 +19,8 @@ const FormIcon = ({ icon: Icon }) => (
 
 const SolicitudClient = () => {
     const [status, setStatus] = useState({ loading: false, type: '', message: '' });
+    const mainRef = useRef(null);
+    const canvasRef = useRef(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -73,14 +75,38 @@ const SolicitudClient = () => {
     };
 
     return (
-        <div className="relative min-h-screen w-full flex flex-col bg-black text-white font-sans selection:bg-primary/30 overflow-x-hidden">
-            <div className="fixed inset-0 pointer-events-none z-0">
+            <div className="relative min-h-screen w-full flex flex-col bg-black text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+                <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute top-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-blue-900/10 rounded-full blur-[150px]"></div>
                 <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-primary/5 rounded-full blur-[120px]"></div>
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
             </div>
+            <div ref={mainRef} className="min-h-screen w-full overflow-x-hidden bg-black text-white selection:bg-[#00CFFF] selection:text-black font-sans flex flex-col relative">
+            <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 h-full w-full pointer-events-none" />
 
-            <main className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center py-16 lg:py-20 min-h-[calc(100vh-80px)]">
+            <header className="fixed top-0 z-50 w-full mx-auto flex items-center justify-between pl-5 pr-5 py-3 transition-colors duration-300 bg-black/50 backdrop-blur-sm">
+                <Link href="/">
+                    <Logo className="w-auto h-8 md:h-12 text-[#00CFFF] mt-2" />
+                </Link>
+                <div className="hidden md:flex flex-row items-center justify-center space-x-4">
+                    <Link href="/#inicio" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors">Inicio</Link>
+                    <Link href="/#features" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors">Features</Link>
+                    <Link href="/#tecnologias" className="py-2 px-3 block hover:text-[#00CFFF]">Conócenos</Link>
+                    <Link href="/#process" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors">Proceso</Link>
+                    <Link href="/Contacto" className="py-2 px-3 block hover:text-[#00CFFF] transition-colors">Contacto</Link>
+                    <Link href="/solicitud" className="flex h-10 px-6 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-sm font-bold shadow-[0_0_15px_rgba(0,208,255,0.3)] transition-all">
+                        Solicitar Demo
+                    </Link>
+                </div>
+                {/* Mobile Button - ONLY Solicitar Demo */}
+                <div className="md:hidden z-50 relative">
+                     <Link href="/solicitud" className="flex h-9 px-4 items-center justify-center rounded-lg bg-primary hover:bg-[#33d9ff] text-[#0f2024] text-xs font-bold shadow-[0_0_10px_rgba(0,208,255,0.3)] transition-all">
+                      Solicitar Demo
+                    </Link>
+                </div>
+            </header>
+
+            <main className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center py-24 pb-12 lg:py-20 flex-grow">
 
                 <div className="flex flex-col gap-6 justify-center">
                     <div>
@@ -238,6 +264,7 @@ const SolicitudClient = () => {
                 </div>
 
             </main>
+        </div>
         </div>
     );
 };
