@@ -54,7 +54,7 @@ const SolicitudClient = () => {
 
         try {
 
-            const response = await fetch('http://localhost:3001/api/demo/request', {
+            const response = await fetch(`${API_BASE_URL}/api/demo/request`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
