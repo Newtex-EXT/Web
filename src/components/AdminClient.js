@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Check, X, RefreshCw, Loader2, Lock, Users, Clock } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = 'https://api.newtex.es';
 
 const AdminClient = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
