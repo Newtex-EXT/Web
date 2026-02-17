@@ -9,7 +9,7 @@ import Link from 'next/link';
 import Logo from '@/components/Logo';
 // import { supabase } from '@/utils/supabase';
 
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = 'https://api.newtex.es';
 
 gsap.registerPlugin(ScrollTrigger);
 
