@@ -497,7 +497,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-xs font-medium text-[#00CFFF]">
               <span>+34 608 77 10 56</span>
-              <span>C. Roa Bastos, 10005 Cáceres</span>
+              <span>C. Río Jaranda 7, 10004, Cáceres</span>
             </div>
           </div>
         </footer>

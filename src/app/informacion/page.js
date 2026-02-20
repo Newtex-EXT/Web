@@ -223,8 +223,8 @@ const Informacion = () => {
                                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                                 <div className="relative z-10">
 
-                                    <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Centro de Control de Pedidos</h3>
-                                    <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Adiós al caos administrativo. Unificamos todos tus canales de venta en un solo panel para eliminar errores manuales y agilizar toda tu logística.</p>
+                                    <h3 className="text-xl md:text-3xl font-bold text-white mb-4">Gestión de Stock y Pedidos</h3>
+                                    <p className="text-sm md:text-lg text-slate-300 leading-relaxed">Sincroniza tu inventario en tiempo real con todos tus canales de venta. Elimina las roturas de stock, automatiza el aprovisionamiento y garantiza la trazabilidad total de tu almacén.</p>
                                 </div>
                             </div>
 
@@ -318,19 +318,40 @@ const Informacion = () => {
                             <h2 className="text-4xl font-bold tracking-tight text-white mb-16 animate-fade-up">Liderazgo Ejecutivo</h2>
                             <div className="divide-y divide-white/10">
                                 {[
-                                    { name: "Daniel Conde", role: "CEO" },
-                                    { name: "Lucas De Alba", role: "CEO" },
-                                    { name: "Carlos Morato", role: "CEO" },
+                                    {
+                                        name: "Daniel Conde",
+                                        role: "Co-Founder & CPO",
+                                        url: "https://www.linkedin.com/in/daniel-conde-newtex/"
+                                    },
+                                    {
+                                        name: "Lucas De Alba",
+                                        role: "Co-Founder & COO",
+                                        url: "https://www.linkedin.com/in/lucas-de-alba-b72427360/"
+                                    },
+                                    {
+                                        name: "Carlos Morato",
+                                        role: "Co-Founder & LSA",
+                                        url: "https://www.linkedin.com/in/carlos-morato-sanguino-295518200/"
+                                    },
                                 ].map((leader, i) => (
-                                    <div key={i} className="leader-item group flex items-center justify-between py-8 transition-colors hover:bg-white/5 px-6 rounded-xl -mx-6 cursor-default">
+                                    <a
+                                        key={i}
+                                        href={leader.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="leader-item group flex items-center justify-between py-8 transition-colors hover:bg-white/5 px-6 rounded-xl -mx-6 cursor-pointer"
+                                    >
                                         <div>
-                                            <p className="text-xl font-bold text-white group-hover:text-primary transition-colors">{leader.name}</p>
-                                            <p className="text-base text-slate-500 mt-1">{leader.role}</p>
+                                            <p className="text-xl font-bold text-white group-hover:text-[#0a66c2] transition-colors">{leader.name}</p>
+                                            <p className="text-base text-slate-500 mt-1 font-mono text-xs uppercase tracking-wider">{leader.role}</p>
                                         </div>
-                                        <div className="size-10 rounded-full border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
-                                            <span className="material-symbols-outlined text-slate-300">chevron_right</span>
+                                        <div className="size-10 rounded-full border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0 group-hover:border-[#0a66c2]/50 group-hover:bg-[#0a66c2]/10">
+                                            {/* Icono SVG oficial de LinkedIn */}
+                                            <svg className="w-5 h-5 text-slate-300 group-hover:text-[#0a66c2] transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                            </svg>
                                         </div>
-                                    </div>
+                                    </a>
                                 ))}
                             </div>
                         </div>
@@ -345,7 +366,7 @@ const Informacion = () => {
                         </div>
                         <div className="flex items-center gap-6 text-xs font-medium text-[#00CFFF]">
                             <span>+34 608 77 10 56</span>
-                            <span>C. Roa Bastos, 10005 Cáceres</span>
+                            <span>C. Río Jaranda 7, 10004, Cáceres</span>
                         </div>
                     </div>
                 </footer>
