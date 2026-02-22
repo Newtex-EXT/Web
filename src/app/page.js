@@ -410,7 +410,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Link href="/informacion" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
                 <span className="material-symbols-outlined text-5xl md:text-7xl mx-auto mb-4 text-[#00CFFF]">info</span>
-                <h3 className="text-lg md:text-2xl font-semibold mt-4">Quienes somos</h3>
+                <h3 className="text-lg md:text-2xl font-semibold mt-4">Quiénes somos</h3>
               </Link>
               <Link href="/informacion#catalogo-de-servicios" className="tech-card bg-white/5 p-8 rounded-lg text-center backdrop-blur-sm will-change-transform cursor-pointer hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(0,207,255,0.2)] border border-transparent hover:border-[#00CFFF]" style={{ backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}>
                 <span className="material-symbols-outlined text-5xl md:text-7xl mx-auto mb-4 text-[#00CFFF]">list_alt</span>

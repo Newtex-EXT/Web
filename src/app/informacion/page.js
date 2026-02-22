@@ -151,14 +151,14 @@ const Informacion = () => {
                                 className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay scale-110"
                                 role="img"
                                 aria-label="Visualización abstracta del núcleo digital con flujos de datos azules"
-                                style={{ backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCnrH62nMNc_wHmr4h1iduQ8OvLer52hXt2BvsXaKzc7tiVrGeInOfWByXW7xLU-HS5KU0YwbK7gnBLUy0_mfXMM35qFRvDxnaPdoNp8uX2a0mEgKOzqbfA45ghAUGJRuhCD0bmV1zTzcfC-nqOLNSVPc9BUc_gXbryX6lqmIviI1K3C0grGmcoMxtUQ4reobim_hB64zgtuTFsHmuKDYracft5l2YHyvJmYxKGlxMNAjyf8MEJNhQ7tTygnwpQHVDDqsypMV02Lf0")` }}
+                                style={{ backgroundImage: `url("/hero-about.png")` }}
                             ></div>
                             <div className="absolute inset-0 bg-gradient-to-t from-[#101022] via-[#101022]/40 to-transparent"></div>
                             <div className="relative z-10 w-full px-8 pb-8 md:pb-16 md:px-16">
                                 <div className="max-w-4xl">
 
                                     <h1 className="animate-fade-up mt-24 md:mt-0 text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 font-['Trebuchet_MS'] leading-tight">
-                                        ¿Quienes <br />
+                                        ¿Quiénes <br />
                                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">somos?</span>
                                     </h1>
                                     <p className="animate-fade-up max-w-2xl text-sm sm:text-xl text-slate-200 leading-relaxed font-light border-l-2 border-primary pl-4 md:pl-8 ml-2">
